@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:800px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.si-green{background:var(--accent-light);color:var(--accent)}
+.si-red{background:var(--red-light);color:var(--red)}
+.si-amber{background:var(--amber-light);color:var(--amber)}
+.si-blue{background:var(--blue-light);color:var(--blue)}
+.si-gray{background:var(--surface2);color:var(--text2)}
+.sec-title{font-size:14px;font-weight:600;color:var(--text)}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px}
+/* APP INFO */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.info-item{background:var(--surface2);border-radius:var(--radius-sm);padding:12px}
+.info-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.info-val{font-size:13.5px;font-weight:500;color:var(--text)}
+/* STATUS */
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.status-row:last-child{border-bottom:none}
+.status-name{font-size:13.5px;color:var(--text);display:flex;align-items:center;gap:8px}
+.status-dot{width:8px;height:8px;border-radius:50%}
+.dot-green{background:var(--accent2)}
+.dot-red{background:var(--red)}
+.dot-amber{background:var(--amber)}
+.status-badge{font-size:11.5px;padding:2px 10px;border-radius:20px;font-weight:600}
+.sb-ok{background:var(--accent-light);color:var(--accent)}
+.sb-err{background:var(--red-light);color:var(--red)}
+.sb-warn{background:var(--amber-light);color:var(--amber)}
+/* LOGS */
+.log-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.fchip{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;font-family:var(--font);transition:all 0.15s}
+.fchip:hover{background:var(--surface2)}
+.fchip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fchip.sel-err{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.fchip.sel-warn{background:var(--amber-light);color:var(--amber);border-color:var(--amber)}
+.fchip.sel-info{background:var(--blue-light);color:var(--blue);border-color:var(--blue)}
+.log-list{display:flex;flex-direction:column;gap:8px;max-height:380px;overflow-y:auto}
+.log-item{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:pointer;transition:border-color 0.15s}
+.log-item:hover{border-color:var(--text3)}
+.log-item.expanded .log-detail{display:block}
+.log-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.log-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
+.lb-error{background:var(--red-light);color:var(--red)}
+.lb-warning{background:var(--amber-light);color:var(--amber)}
+.lb-info{background:var(--blue-light);color:var(--blue)}
+.log-code{font-size:12px;font-weight:600;color:var(--text3);font-family:monospace}
+.log-msg{font-size:13.5px;color:var(--text);flex:1;min-width:0}
+.log-time{font-size:11.5px;color:var(--text3);flex-shrink:0}
+.log-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.log-detail-row{display:flex;gap:8px;font-size:12.5px;color:var(--text2);margin-bottom:4px}
+.log-detail-label{color:var(--text3);min-width:80px;flex-shrink:0}
+.log-detail-val{color:var(--text)}
+.log-how{background:var(--accent-light);border-radius:var(--radius-sm);padding:10px 12px;margin-top:8px;font-size:12.5px;color:var(--accent);line-height:1.6}
+.log-how strong{font-weight:600}
+/* CHAMADO */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5}
+.success-msg{display:none;text-align:center;padding:16px;background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius-sm);margin-top:12px}
+.success-msg.show{display:block}
+/* THEME */
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Suporte & Manutenção</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Logs, status do sistema e abertura de chamados</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn btn-primary" onclick="copyLogs()"><i class="ti ti-copy" style="font-size:14px"></i>Copiar logs para suporte</button>
+  </div>
+</div>
+
+<!-- INFORMAÇÕES DO APP -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-green"><i class="ti ti-info-circle" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Informações do sistema</div><div class="sec-sub">Versão e ambiente do aplicativo</div></div>
+  </div>
+  <div class="info-grid">
+    <div class="info-item"><div class="info-label">Versão do app</div><div class="info-val">v1.0.0</div></div>
+    <div class="info-item"><div class="info-label">Empresa</div><div class="info-val">Buffet Sabor & Arte</div></div>
+    <div class="info-item"><div class="info-label">Usuário logado</div><div class="info-val">Marcelo (admin)</div></div>
+    <div class="info-item"><div class="info-label">Último acesso</div><div class="info-val" id="last-access"></div></div>
+    <div class="info-item"><div class="info-label">Navegador</div><div class="info-val" id="browser-info"></div></div>
+    <div class="info-item"><div class="info-label">Dispositivo</div><div class="info-val" id="device-info"></div></div>
+  </div>
+</div>
+
+<!-- STATUS DOS SERVIÇOS -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-green"><i class="ti ti-server" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Status dos serviços</div><div class="sec-sub">Tudo que o app depende para funcionar</div></div>
+  </div>
+  <div id="status-list">
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-green"></div>Banco de dados</div>
+      <span class="status-badge sb-ok">✅ Operacional</span>
+    </div>
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-green"></div>Autenticação (login)</div>
+      <span class="status-badge sb-ok">✅ Operacional</span>
+    </div>
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-green"></div>Upload de arquivos</div>
+      <span class="status-badge sb-ok">✅ Operacional</span>
+    </div>
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-amber"></div>API de fotos (Unsplash)</div>
+      <span class="status-badge sb-warn">⚠️ Lento</span>
+    </div>
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-green"></div>Geração de PDF</div>
+      <span class="status-badge sb-ok">✅ Operacional</span>
+    </div>
+    <div class="status-row">
+      <div class="status-name"><div class="status-dot dot-green"></div>Envio de WhatsApp</div>
+      <span class="status-badge sb-ok">✅ Operacional</span>
+    </div>
+  </div>
+</div>
+
+<!-- LOGS DE ERROS -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-red"><i class="ti ti-bug" aria-hidden="true"></i></div>
+    <div>
+      <div class="sec-title">Registro de erros e eventos</div>
+      <div class="sec-sub">Clique em cada item para ver detalhes e como resolver</div>
+    </div>
+    <button class="btn btn-sm btn-danger" onclick="clearLogs()" style="margin-left:auto"><i class="ti ti-trash" style="font-size:13px"></i>Limpar logs</button>
+  </div>
+  <div class="log-filters">
+    <div class="fchip sel" onclick="filterLog('todos',this)">Todos</div>
+    <div class="fchip" onclick="filterLog('error',this)">🔴 Erros</div>
+    <div class="fchip" onclick="filterLog('warning',this)">🟡 Avisos</div>
+    <div class="fchip" onclick="filterLog('info',this)">🔵 Info</div>
+  </div>
+  <div class="log-list" id="log-list"></div>
+</div>
+
+<!-- ABRIR CHAMADO -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-blue"><i class="ti ti-headset" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Abrir chamado de suporte</div><div class="sec-sub">Descreva o problema e envie para o suporte</div></div>
+  </div>
+  <div class="field">
+    <label>Tela onde ocorreu o problema</label>
+    <select id="ticket-screen">
+      <option value="">Selecione a tela</option>
+      <option>Dashboard</option>
+      <option>CRM / Leads</option>
+      <option>Clientes</option>
+      <option>Orçamentos / Contratos</option>
+      <option>Convidados</option>
+      <option>Financeiro</option>
+      <option>Configurações</option>
+      <option>Outra</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Código do erro (se aparecer)</label>
+    <input type="text" id="ticket-code" placeholder="Ex: ERR-042">
+  </div>
+  <div class="field">
+    <label>O que aconteceu? *</label>
+    <textarea id="ticket-desc" placeholder="Descreva o que você estava fazendo quando o erro ocorreu. Quanto mais detalhe, mais fácil resolver..."></textarea>
+  </div>
+  <div class="field">
+    <label>Urgência</label>
+    <select id="ticket-urgency">
+      <option value="baixa">🟢 Baixa — posso continuar trabalhando</option>
+      <option value="media">🟡 Média — está dificultando o trabalho</option>
+      <option value="alta">🔴 Alta — não consigo usar o app</option>
+    </select>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="submitTicket()"><i class="ti ti-send" style="font-size:14px"></i>Enviar chamado</button>
+    <button class="btn" onclick="copyLogsToTicket()"><i class="ti ti-paperclip" style="font-size:14px"></i>Anexar logs automaticamente</button>
+  </div>
+  <div class="success-msg" id="ticket-success">
+    <i class="ti ti-circle-check" style="font-size:22px;color:var(--accent);display:block;margin-bottom:6px"></i>
+    <div style="font-size:14px;font-weight:600;color:var(--accent)">Chamado enviado!</div>
+    <div style="font-size:13px;color:var(--text2);margin-top:4px">O suporte foi notificado e entrará em contato em breve.</div>
+  </div>
+</div>
+
+<script>
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let curFilter='todos';
+
+// Dados do dispositivo
+document.getElementById('last-access').textContent=new Date().toLocaleString('pt-BR');
+const ua=navigator.userAgent;
+const browser=ua.includes('Chrome')?'Google Chrome':ua.includes('Firefox')?'Firefox':ua.includes('Safari')?'Safari':'Outro';
+document.getElementById('browser-info').textContent=browser;
+document.getElementById('device-info').textContent=/Mobi|Android/i.test(ua)?'📱 Mobile':'🖥️ Desktop';
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+// LOGS simulados
+const logs=[
+  {
+    id:1,type:'error',code:'ERR-042',
+    msg:'Falha ao salvar cliente',
+    screen:'Cadastro de Clientes',
+    time:'07/06/2026 14:32',
+    detail:'Tentativa de salvar cliente "Maria Fernanda" falhou. Campo CPF em formato inválido.',
+    how:'<strong>Como resolver:</strong> Verifique se o CPF foi digitado corretamente (formato 000.000.000-00). Se o problema persistir, envie este log ao suporte com o código ERR-042.'
+  },
+  {
+    id:2,type:'warning',code:'WARN-018',
+    msg:'API de fotos respondendo lentamente',
+    screen:'Cadastro de Ingredientes',
+    time:'07/06/2026 13:15',
+    detail:'A busca de foto automática para o ingrediente "Picanha" demorou mais de 10 segundos.',
+    how:'<strong>O que fazer:</strong> Isso pode ser instabilidade temporária do serviço de fotos (Unsplash). Aguarde alguns minutos e tente novamente. Se persistir por mais de 1 hora, abra um chamado.'
+  },
+  {
+    id:3,type:'error',code:'ERR-031',
+    msg:'Erro ao gerar PDF do orçamento',
+    screen:'Orçamentos',
+    time:'06/06/2026 18:50',
+    detail:'Orçamento #ORC-023 não pôde ser gerado em PDF. Possível problema com caracteres especiais no nome do cliente.',
+    how:'<strong>Como resolver:</strong> Tente abrir o orçamento novamente e clique em "Gerar PDF". Se não funcionar, anote o número do orçamento (ORC-023) e envie o código ERR-031 ao suporte.'
+  },
+  {
+    id:4,type:'info',code:'INFO-005',
+    msg:'Sessão encerrada por inatividade',
+    screen:'Dashboard',
+    time:'06/06/2026 12:00',
+    detail:'O usuário ficou inativo por 30 minutos e foi desconectado automaticamente por segurança.',
+    how:'<strong>Normal:</strong> Isso é um recurso de segurança. Basta fazer login novamente. Se quiser aumentar o tempo de inatividade, acesse Configurações → Segurança.'
+  },
+  {
+    id:5,type:'warning',code:'WARN-007',
+    msg:'Limite de upload quase atingido',
+    screen:'Configurações',
+    time:'05/06/2026 10:20',
+    detail:'O armazenamento de arquivos está em 78% da capacidade do plano atual.',
+    how:'<strong>O que fazer:</strong> Acesse Configurações → Plano e considere fazer upgrade, ou remova fotos antigas que não são mais usadas.'
+  },
+  {
+    id:6,type:'info',code:'INFO-001',
+    msg:'Backup automático realizado',
+    screen:'Sistema',
+    time:'05/06/2026 03:00',
+    detail:'Backup diário dos dados realizado com sucesso.',
+    how:'<strong>Normal:</strong> Nenhuma ação necessária. O sistema faz backup automático todo dia às 3h.'
+  },
+];
+
+function renderLogs(){
+  const el=document.getElementById('log-list');
+  el.innerHTML='';
+  const filtered=curFilter==='todos'?logs:logs.filter(function(l){return l.type===curFilter;});
+  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px"><i class="ti ti-check" style="font-size:22px;display:block;margin-bottom:6px;color:var(--accent)"></i>Nenhum registro encontrado</div>';return;}
+  filtered.forEach(function(log){
+    const div=document.createElement('div');
+    div.className='log-item';
+    div.innerHTML=
+      '<div class="log-header">'+
+        '<span class="log-badge lb-'+log.type+'">'+(log.type==='error'?'🔴 Erro':log.type==='warning'?'🟡 Aviso':'🔵 Info')+'</span>'+
+        '<span class="log-code">'+log.code+'</span>'+
+        '<span class="log-msg">'+log.msg+'</span>'+
+        '<span class="log-time">'+log.time+'</span>'+
+      '</div>'+
+      '<div class="log-detail">'+
+        '<div class="log-detail-row"><span class="log-detail-label">Tela:</span><span class="log-detail-val">'+log.screen+'</span></div>'+
+        '<div class="log-detail-row"><span class="log-detail-label">Detalhe:</span><span class="log-detail-val">'+log.detail+'</span></div>'+
+        '<div class="log-how">'+log.how+'</div>'+
+      '</div>';
+    div.onclick=function(){div.classList.toggle('expanded');};
+    el.appendChild(div);
+  });
+}
+
+function filterLog(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.fchip').forEach(function(b){b.classList.remove('sel','sel-err','sel-warn','sel-info');});
+  btn.classList.add('sel'+(f==='error'?'-err':f==='warning'?'-warn':f==='info'?'-info':''));
+  renderLogs();
+}
+
+function clearLogs(){
+  if(!confirm('Limpar todos os logs? Essa ação não pode ser desfeita.'))return;
+  logs.length=0;
+  renderLogs();
+}
+
+function copyLogs(){
+  const txt=logs.map(function(l){return '['+l.time+'] '+l.code+' ('+l.type.toUpperCase()+'): '+l.msg+'\nTela: '+l.screen+'\nDetalhe: '+l.detail;}).join('\n\n---\n\n');
+  const full='=== LOGS BUFFETPRO ===\nVersão: v1.0.0\nEmpresa: Buffet Sabor & Arte\nUsuário: Marcelo (admin)\nData: '+new Date().toLocaleString('pt-BR')+'\nNavegador: '+document.getElementById('browser-info').textContent+'\n\n'+txt;
+  navigator.clipboard.writeText(full).then(function(){
+    alert('Logs copiados! Cole em uma mensagem para o suporte.');
+  }).catch(function(){
+    alert('Para copiar: selecione o texto abaixo e use Ctrl+C\n\n'+full);
+  });
+}
+
+function copyLogsToTicket(){
+  const txt=logs.slice(0,3).map(function(l){return l.code+': '+l.msg+' ('+l.time+')';}).join('\n');
+  const ta=document.getElementById('ticket-desc');
+  ta.value=(ta.value?ta.value+'\n\n':'')+'--- Logs anexados automaticamente ---\n'+txt;
+}
+
+function submitTicket(){
+  const desc=document.getElementById('ticket-desc').value.trim();
+  if(!desc){alert('Por favor descreva o problema antes de enviar.');return;}
+  document.getElementById('ticket-success').classList.add('show');
+  document.getElementById('ticket-desc').value='';
+  document.getElementById('ticket-code').value='';
+  document.getElementById('ticket-screen').value='';
+  setTimeout(function(){document.getElementById('ticket-success').classList.remove('show');},5000);
+}
+
+renderLogs();
+</script>
+</body>
+</html>

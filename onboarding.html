@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:560px}
+.logo{text-align:center;margin-bottom:32px}
+.logo-icon{width:56px;height:56px;border-radius:16px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px}
+.logo-name{font-size:22px;font-weight:600;color:var(--text)}
+.logo-sub{font-size:13.5px;color:var(--text3);margin-top:3px}
+/* STEPS */
+.steps{display:flex;align-items:center;margin-bottom:28px;gap:0}
+.step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:var(--border);z-index:0}
+.step.done:not(:last-child)::after,.step.active:not(:last-child)::after{background:var(--accent)}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid var(--border);background:var(--surface);color:var(--text3);z-index:1;transition:all 0.3s}
+.step.done .step-circle{background:var(--accent);border-color:var(--accent);color:#fff}
+.step.active .step-circle{background:var(--blue-light);border-color:var(--blue);color:var(--blue)}
+.step-label{font-size:11px;color:var(--text3);font-weight:500;text-align:center}
+.step.active .step-label,.step.done .step-label{color:var(--text)}
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:16px}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:6px}
+.page-sub{font-size:13.5px;color:var(--text2);margin-bottom:24px}
+/* BILLING TOGGLE */
+.billing-toggle{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;width:fit-content}
+.btog{padding:7px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.2s}
+.btog.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.discount-tag{background:var(--accent);color:#fff;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:20px;margin-left:6px}
+/* PLANS */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.plan{border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.2s;position:relative}
+.plan:hover{border-color:var(--text3)}
+.plan.sel{border-color:var(--accent);background:var(--accent-light)}
+.plan-popular{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:10.5px;font-weight:600;padding:2px 10px;border-radius:20px;white-space:nowrap}
+.plan-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.plan-price{font-size:26px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:2px}
+.plan-price span{font-size:13px;font-weight:400;color:var(--text3)}
+.plan-period{font-size:11.5px;color:var(--text3);margin-bottom:12px}
+.plan-feat{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px;padding:3px 0}
+.plan-feat i{font-size:13px;color:var(--accent);flex-shrink:0}
+/* FORM */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.field-hint{font-size:11px;color:var(--text3);margin-top:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* STRIPE MOCK */
+.stripe-field{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.stripe-field i{font-size:16px;color:var(--text3)}
+.stripe-input{flex:1;border:none;background:transparent;font-size:14px;color:var(--text);font-family:var(--font);outline:none}
+.stripe-input::placeholder{color:var(--text3)}
+.stripe-badge{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-bottom:14px;justify-content:center}
+/* SUMMARY */
+.summary-box{background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px}
+.summary-row{display:flex;justify-content:space-between;font-size:13.5px;padding:4px 0;border-bottom:1px solid var(--border)}
+.summary-row:last-child{border-bottom:none;font-weight:600;font-size:15px;padding-top:8px;color:var(--text)}
+.summary-label{color:var(--text2)}
+/* SUCCESS */
+.success-screen{text-align:center;padding:20px 0}
+.success-icon{font-size:56px;margin-bottom:16px}
+.success-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+/* BTN */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s;width:100%;justify-content:center}
+.btn:hover{background:var(--surface2)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);font-size:15px;padding:12px 18px}
+.btn-primary:hover{background:var(--accent2)}
+.btn-outline{border-color:var(--border);color:var(--text2);width:auto}
+.btn-outline:hover{background:var(--surface2);color:var(--text)}
+.loading{display:none;text-align:center;padding:12px 0}
+.loading i{font-size:28px;color:var(--accent);animation:spin 0.8s linear infinite;display:block;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">
+    <div class="logo-icon">🍽️</div>
+    <div class="logo-name">BuffetPro</div>
+    <div class="logo-sub">Bem-vindo! Configure sua conta em poucos passos</div>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="step active" id="s1"><div class="step-circle">1</div><div class="step-label">Sua conta</div></div>
+    <div class="step" id="s2"><div class="step-circle">2</div><div class="step-label">Escolha o plano</div></div>
+    <div class="step" id="s3"><div class="step-circle">3</div><div class="step-label">Pagamento</div></div>
+    <div class="step" id="s4"><div class="step-circle">4</div><div class="step-label">Tudo pronto</div></div>
+  </div>
+
+  <!-- STEP 1: CONTA -->
+  <div class="page active" id="page-1">
+    <div class="card">
+      <div class="page-title">Crie sua conta</div>
+      <div class="page-sub">Você será o administrador do seu espaço no BuffetPro</div>
+      <div class="field"><label>Nome completo *</label><input type="text" id="s1-name" placeholder="Seu nome completo"></div>
+      <div class="field"><label>Nome do seu negócio *</label><input type="text" id="s1-biz" placeholder="Ex: Buffet Sabor & Arte, Espaço das Flores..."></div>
+      <div class="field"><label>E-mail *</label><input type="email" id="s1-email" placeholder="seu@email.com"></div>
+      <div class="field"><label>Telefone / WhatsApp *</label><input type="text" id="s1-phone" placeholder="(11) 99999-0000" oninput="mkPhone(this)"></div>
+      <div class="g2">
+        <div class="field"><label>Senha *</label><input type="password" id="s1-pass" placeholder="Mínimo 8 caracteres"></div>
+        <div class="field"><label>Confirmar senha *</label><input type="password" id="s1-pass2" placeholder="Repita a senha"></div>
+      </div>
+      <button class="btn btn-primary" onclick="goStep(2)"><i class="ti ti-arrow-right" style="font-size:16px"></i>Continuar</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PLANO -->
+  <div class="page" id="page-2">
+    <div class="card">
+      <div class="page-title">Escolha seu plano</div>
+      <div class="page-sub">Todos os planos incluem acesso completo aos módulos. A diferença é o número de usuários.</div>
+
+      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <div class="billing-toggle">
+          <button class="btog active" id="btog-m" onclick="setBilling('mensal',this)">Mensal</button>
+          <button class="btog" id="btog-a" onclick="setBilling('anual',this)">Anual <span class="discount-tag">-20%</span></button>
+        </div>
+      </div>
+
+      <div class="plans" id="plans-grid"></div>
+
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <button class="btn btn-outline" onclick="goStep(1)"><i class="ti ti-arrow-left" style="font-size:14px"></i>Voltar</button>
+        <button class="btn btn-primary" style="flex:1" onclick="goStep(3)"><i class="ti ti-arrow-right" style="font-size:16px"></i>Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: PAGAMENTO -->
+  <div class="page" id="page-3">
+    <div class="card">
+      <div class="page-title">Pagamento</div>
+      <div class="page-sub">Processado com segurança pelo Stripe. Cancele quando quiser.</div>
+
+      <div class="summary-box" id="payment-summary"></div>
+
+      <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Dados do cartão</div>
+      <div class="stripe-field"><i class="ti ti-credit-card"></i><input class="stripe-input" placeholder="Número do cartão" maxlength="19" oninput="fmtCard(this)"></div>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="stripe-field" style="margin-bottom:0"><i class="ti ti-calendar"></i><input class="stripe-input" placeholder="MM/AA" maxlength="5" oninput="fmtDate(this)"></div>
+        <div class="stripe-field" style="margin-bottom:0"><i class="ti ti-lock"></i><input class="stripe-input" placeholder="CVV" maxlength="3" type="password"></div>
+      </div>
+      <div class="stripe-field"><i class="ti ti-user"></i><input class="stripe-input" placeholder="Nome no cartão"></div>
+
+      <div class="stripe-badge"><i class="ti ti-shield-check" style="font-size:14px;color:var(--accent)"></i>Pagamento seguro via <strong style="margin-left:3px">Stripe</strong></div>
+
+      <div class="loading" id="pay-loading"><i class="ti ti-loader-2"></i><div style="font-size:13.5px;color:var(--text2)">Processando pagamento...</div></div>
+
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <button class="btn btn-outline" onclick="goStep(2)"><i class="ti ti-arrow-left" style="font-size:14px"></i>Voltar</button>
+        <button class="btn btn-primary" style="flex:1" id="pay-btn" onclick="processPayment()"><i class="ti ti-lock" style="font-size:16px"></i>Pagar e ativar conta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: SUCESSO -->
+  <div class="page" id="page-4">
+    <div class="card">
+      <div class="success-screen">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Conta ativada com sucesso!</div>
+        <div class="success-sub" id="success-msg"></div>
+        <button class="btn btn-primary" onclick="goToApp()"><i class="ti ti-layout-dashboard" style="font-size:16px"></i>Acessar o BuffetPro</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+let billing='mensal';
+let selPlan='pro';
+
+const plans={
+  starter:{name:'Starter',mensal:89,anual:71,users:1,userExtra:0,desc:'Perfeito para quem trabalha sozinho',feats:['1 usuário (você)','Todos os módulos','Até 50 clientes','Suporte por e-mail']},
+  pro:{name:'Pro',mensal:149,anual:119,users:1,userExtra:29,desc:'Mais popular para pequenas equipes',feats:['1 admin incluso','Todos os módulos','Clientes ilimitados','+ R$ 29/usuário extra','Suporte prioritário'],popular:true},
+  business:{name:'Business',mensal:299,anual:239,users:5,userExtra:0,desc:'Para equipes maiores',feats:['Até 5 usuários incluso','Todos os módulos','Clientes ilimitados','Suporte prioritário','Onboarding guiado']},
+};
+
+function setBilling(b,btn){
+  billing=b;
+  document.querySelectorAll('.btog').forEach(function(x){x.classList.remove('active');});
+  btn.classList.add('active');
+  renderPlans();
+  updateSummary();
+}
+
+function renderPlans(){
+  const grid=document.getElementById('plans-grid');
+  grid.innerHTML='';
+  Object.keys(plans).forEach(function(key){
+    const p=plans[key];
+    const price=billing==='mensal'?p.mensal:p.anual;
+    const div=document.createElement('div');
+    div.className='plan'+(selPlan===key?' sel':'');
+    div.innerHTML=
+      (p.popular?'<div class="plan-popular">Mais popular</div>':'')+
+      '<div class="plan-name">'+p.name+'</div>'+
+      '<div class="plan-price">R$ '+price+'<span>/mês</span></div>'+
+      '<div class="plan-period">'+(billing==='anual'?'Cobrado anualmente':'Cobrado mensalmente')+'</div>'+
+      p.feats.map(function(f){return'<div class="plan-feat"><i class="ti ti-check"></i>'+f+'</div>';}).join('');
+    div.onclick=function(){selPlan=key;renderPlans();updateSummary();};
+    grid.appendChild(div);
+  });
+}
+
+function updateSummary(){
+  const p=plans[selPlan];
+  const price=billing==='mensal'?p.mensal:p.anual;
+  const total=billing==='anual'?price*12:price;
+  const el=document.getElementById('payment-summary');
+  if(!el)return;
+  el.innerHTML=
+    '<div class="summary-row"><span class="summary-label">Plano</span><span>BuffetPro '+p.name+'</span></div>'+
+    '<div class="summary-row"><span class="summary-label">Recorrência</span><span>'+(billing==='mensal'?'Mensal':'Anual (20% off)')+'</span></div>'+
+    '<div class="summary-row"><span class="summary-label">Usuários inclusos</span><span>'+p.users+(p.userExtra?'+ R$ '+p.userExtra+'/extra':'')+'</span></div>'+
+    '<div class="summary-row"><span class="summary-label">Total</span><span>R$ '+total.toLocaleString('pt-BR')+(billing==='anual'?'/ano':'/mês')+'</span></div>';
+}
+
+function goStep(n){
+  for(var i=1;i<=4;i++){
+    document.getElementById('page-'+i).classList.remove('active');
+    const s=document.getElementById('s'+i);
+    s.classList.remove('active','done');
+    if(i<n)s.classList.add('done');
+    else if(i===n)s.classList.add('active');
+  }
+  document.getElementById('page-'+n).classList.add('active');
+  if(n===3)updateSummary();
+  window.scrollTo(0,0);
+}
+
+function processPayment(){
+  document.getElementById('pay-btn').style.display='none';
+  document.getElementById('pay-loading').style.display='block';
+  setTimeout(function(){
+    const p=plans[selPlan];
+    const price=billing==='mensal'?p.mensal:p.anual;
+    document.getElementById('success-msg').innerHTML=
+      'Seu plano <strong>'+p.name+'</strong> está ativo.<br>'+
+      'Próxima cobrança: R$ '+price.toLocaleString('pt-BR')+(billing==='anual'?'/ano':'/mês')+'.<br><br>'+
+      'Agora você pode configurar seu espaço, convidar sua equipe e começar a usar o BuffetPro!';
+    goStep(4);
+  },2200);
+}
+
+function goToApp(){alert('Redirecionando para o app...\n\n(No app real, abrirá o Dashboard)');}
+function mkPhone(el){let v=el.value.replace(/\D/g,'').substring(0,11);el.value=v.length<=10?v.replace(/^(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3'):v.replace(/^(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');}
+function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtDate(el){let v=el.value.replace(/\D/g,'').substring(0,4);if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2);el.value=v;}
+
+renderPlans();
+</script>
+</body>
+</html>

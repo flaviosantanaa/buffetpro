@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:720px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.si-green{background:var(--accent-light);color:var(--accent)}
+.si-amber{background:var(--amber-light);color:var(--amber)}
+.si-red{background:var(--red-light);color:var(--red)}
+.si-blue{background:var(--blue-light);color:var(--blue)}
+.si-gray{background:var(--surface2);color:var(--text2)}
+.sec-title{font-size:14px;font-weight:600;color:var(--text)}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5}
+.field-hint{font-size:11px;color:var(--text3);margin-top:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.prefix{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.15s}
+.prefix:focus-within{border-color:var(--accent)}
+.prefix span{padding:8px 10px;font-size:13px;color:var(--text3);background:var(--surface2);border-right:1px solid var(--border);white-space:nowrap}
+.prefix input{border:none;outline:none;padding:8px 10px;font-size:13.5px;background:transparent;color:var(--text);font-family:var(--font);width:100%}
+/* EVENTO RESUMO */
+.event-summary{background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.event-summary-icon{font-size:32px;flex-shrink:0}
+.event-summary-name{font-size:16px;font-weight:600;color:var(--text)}
+.event-summary-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600;margin-left:8px}
+.b-enc{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+/* CONVIDADOS COMPARISON */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.comp-item{background:var(--surface2);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.comp-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.comp-val{font-size:22px;font-weight:600;color:var(--text);line-height:1}
+.comp-sub{font-size:11.5px;color:var(--text3);margin-top:4px}
+.comp-diff{font-size:13px;font-weight:500;padding:6px 12px;border-radius:var(--radius-sm);text-align:center;margin-top:10px}
+.diff-over{background:var(--amber-light);color:var(--amber)}
+.diff-under{background:var(--blue-light);color:var(--blue)}
+.diff-exact{background:var(--accent-light);color:var(--accent)}
+/* ESTRELAS */
+.stars{display:flex;gap:6px;margin-top:4px}
+.star{font-size:28px;cursor:pointer;filter:grayscale(1);transition:all 0.15s;user-select:none}
+.star.on{filter:none;transform:scale(1.1)}
+.star-label{font-size:13px;color:var(--text3);margin-top:6px}
+/* COBRANÇAS */
+.charge-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.charge-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+.charge-type{font-size:13px;font-weight:500;color:var(--text)}
+.charge-rm{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;transition:all 0.15s;flex-shrink:0}
+.charge-rm:hover{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.add-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;padding-top:10px;border-top:1px solid var(--border)}
+/* TOTAL BOX */
+.total-box{background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px}
+.total-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.total-row:last-child{border-bottom:none;font-weight:600;font-size:16px;padding-top:10px;color:var(--text)}
+.total-label{color:var(--text2)}
+.total-val-pos{color:var(--red);font-weight:500}
+.total-val-neg{color:var(--accent);font-weight:500}
+/* FOTOS */
+.photos-upload{border:2px dashed var(--border);border-radius:var(--radius);padding:24px;text-align:center;cursor:pointer;transition:background 0.15s;margin-bottom:12px}
+.photos-upload:hover{background:var(--surface2)}
+.photos-upload i{font-size:28px;color:var(--text3);display:block;margin-bottom:6px}
+.photos-upload span{font-size:13.5px;color:var(--text2)}
+.photos-upload small{font-size:12px;color:var(--text3);display:block;margin-top:4px}
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.photo-thumb{aspect-ratio:1;border-radius:var(--radius-sm);overflow:hidden;position:relative;background:var(--surface2)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-rm{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:var(--red-light);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:11px}
+/* FOOTER */
+.footer-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap}
+.saved{font-size:13px;color:var(--accent);display:none;align-items:center;gap:5px}
+.saved.show{display:flex}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Fechamento de evento</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Registro final pós-evento</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn" onclick="window.print()"><i class="ti ti-file-type-pdf" style="font-size:14px"></i>Gerar relatório</button>
+  </div>
+</div>
+
+<!-- RESUMO DO EVENTO -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-gray"><i class="ti ti-calendar-event" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Evento</div><div class="sec-sub">Selecione o contrato para fechar</div></div>
+  </div>
+  <div class="field" style="margin-bottom:14px">
+    <label>Contrato do evento</label>
+    <select id="sel-contract" onchange="loadEvent(this.value)">
+      <option value="">Selecione um contrato encerrado</option>
+      <option value="ctr011">CTR-011 · Carlos Mendes · Formatura · 30/05/2026</option>
+      <option value="ctr010">CTR-010 · Família Costa · Casamento · 28/06/2026</option>
+      <option value="ctr009">CTR-009 · Ana Paula Silva · Aniversário · 14/06/2026</option>
+    </select>
+  </div>
+  <div id="event-summary-box" style="display:none">
+    <div class="event-summary">
+      <div class="event-summary-icon" id="ev-icon">🎉</div>
+      <div>
+        <div class="event-summary-name" id="ev-name">—</div>
+        <div class="event-summary-sub" id="ev-sub">—</div>
+      </div>
+      <span class="badge b-enc">🏁 Encerrado</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONVIDADOS PRESENTES -->
+<div class="card" id="section-guests" style="display:none">
+  <div class="sec-head">
+    <div class="sec-icon si-blue"><i class="ti ti-users" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Convidados presentes</div><div class="sec-sub">Compare o previsto com o realizado</div></div>
+  </div>
+  <div class="comp-grid">
+    <div class="comp-item">
+      <div class="comp-label">Previsto</div>
+      <div class="comp-val" id="guests-previsto">80</div>
+      <div class="comp-sub">no contrato</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-label">Check-in feito</div>
+      <div class="comp-val" id="guests-checkin" style="color:var(--blue)">74</div>
+      <div class="comp-sub">pelo app</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-label">Real informado</div>
+      <div class="comp-val" id="guests-real-display" style="color:var(--accent)">—</div>
+      <div class="comp-sub">contagem manual</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="field">
+      <label>Adultos presentes (contagem manual)</label>
+      <input type="number" id="real-adultos" placeholder="Ex: 72" min="0" oninput="calcDiff()">
+    </div>
+    <div class="field">
+      <label>Crianças presentes (contagem manual)</label>
+      <input type="number" id="real-criancas" placeholder="Ex: 8" min="0" oninput="calcDiff()">
+    </div>
+  </div>
+  <div class="comp-diff" id="comp-diff" style="display:none"></div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="card" id="section-avaliacao" style="display:none">
+  <div class="sec-head">
+    <div class="sec-icon si-amber"><i class="ti ti-star" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Avaliação do evento</div><div class="sec-sub">Como foi o evento na sua visão?</div></div>
+  </div>
+  <div style="margin-bottom:16px">
+    <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Nota geral do evento</div>
+    <div class="stars" id="stars">
+      <span class="star" onclick="setStar(1)">⭐</span>
+      <span class="star" onclick="setStar(2)">⭐</span>
+      <span class="star" onclick="setStar(3)">⭐</span>
+      <span class="star" onclick="setStar(4)">⭐</span>
+      <span class="star" onclick="setStar(5)">⭐</span>
+    </div>
+    <div class="star-label" id="star-label">Clique para avaliar</div>
+  </div>
+  <div class="g2">
+    <div class="field">
+      <label>O cliente ficou satisfeito?</label>
+      <select id="client-satisfaction">
+        <option value="">Selecione</option>
+        <option>😄 Muito satisfeito</option>
+        <option>🙂 Satisfeito</option>
+        <option>😐 Neutro</option>
+        <option>😕 Insatisfeito</option>
+        <option>😠 Muito insatisfeito</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Indicaria para outros?</label>
+      <select id="would-recommend">
+        <option value="">Selecione</option>
+        <option>✅ Sim, com certeza</option>
+        <option>🤔 Talvez</option>
+        <option>❌ Não</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- COBRANÇAS ADICIONAIS -->
+<div class="card" id="section-charges" style="display:none">
+  <div class="sec-head">
+    <div class="sec-icon si-amber"><i class="ti ti-coins" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Ajustes financeiros</div><div class="sec-sub">Cobranças extras ou reembolsos pós-evento</div></div>
+  </div>
+
+  <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Cobranças adicionais</div>
+  <div class="charge-rows" id="charge-rows"></div>
+  <div class="add-row" style="margin-bottom:20px">
+    <div class="field" style="min-width:140px;margin-bottom:0">
+      <label>Tipo</label>
+      <select id="new-charge-type">
+        <option>Hora extra</option>
+        <option>Dano ao espaço</option>
+        <option>Convidados excedentes</option>
+        <option>Serviço adicional</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="field" style="min-width:120px;margin-bottom:0">
+      <label>Valor</label>
+      <div class="prefix"><span>R$</span><input type="text" id="new-charge-val" placeholder="0,00" oninput="maskMoney(this)"></div>
+    </div>
+    <div class="field" style="flex:1;min-width:120px;margin-bottom:0">
+      <label>Descrição</label>
+      <input type="text" id="new-charge-desc" placeholder="Detalhe...">
+    </div>
+    <button class="btn btn-sm" onclick="addCharge('cobrança')" style="flex-shrink:0;height:fit-content"><i class="ti ti-plus" style="font-size:13px"></i>Adicionar</button>
+  </div>
+
+  <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Reembolsos</div>
+  <div class="charge-rows" id="refund-rows"></div>
+  <div class="add-row" style="margin-bottom:20px">
+    <div class="field" style="min-width:140px;margin-bottom:0">
+      <label>Motivo</label>
+      <select id="new-refund-type">
+        <option>Serviço não realizado</option>
+        <option>Convidados abaixo do previsto</option>
+        <option>Devolução de caução</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="field" style="min-width:120px;margin-bottom:0">
+      <label>Valor</label>
+      <div class="prefix"><span>R$</span><input type="text" id="new-refund-val" placeholder="0,00" oninput="maskMoney(this)"></div>
+    </div>
+    <div class="field" style="flex:1;min-width:120px;margin-bottom:0">
+      <label>Descrição</label>
+      <input type="text" id="new-refund-desc" placeholder="Detalhe...">
+    </div>
+    <button class="btn btn-sm" onclick="addCharge('reembolso')" style="flex-shrink:0;height:fit-content"><i class="ti ti-plus" style="font-size:13px"></i>Adicionar</button>
+  </div>
+
+  <div class="total-box" id="total-box">
+    <div class="total-row"><span class="total-label">Valor original do contrato</span><span id="t-original">R$ 9.800,00</span></div>
+    <div class="total-row" id="t-charge-row" style="display:none"><span class="total-label">Cobranças adicionais</span><span class="total-val-pos" id="t-charges">+ R$ 0,00</span></div>
+    <div class="total-row" id="t-refund-row" style="display:none"><span class="total-label">Reembolsos</span><span class="total-val-neg" id="t-refunds">- R$ 0,00</span></div>
+    <div class="total-row"><span class="total-label">Total final</span><span id="t-total" style="color:var(--accent)">R$ 9.800,00</span></div>
+  </div>
+</div>
+
+<!-- OBSERVAÇÕES -->
+<div class="card" id="section-obs" style="display:none">
+  <div class="sec-head">
+    <div class="sec-icon si-gray"><i class="ti ti-note" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Observações gerais</div><div class="sec-sub">Anotações internas sobre o evento</div></div>
+  </div>
+  <div class="field" style="margin-bottom:0">
+    <textarea id="obs-text" style="min-height:100px" placeholder="O que funcionou bem? O que pode melhorar? Algo importante para os próximos eventos deste cliente..."></textarea>
+  </div>
+</div>
+
+<!-- FOTOS -->
+<div class="card" id="section-fotos" style="display:none">
+  <div class="sec-head">
+    <div class="sec-icon si-blue"><i class="ti ti-photo" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Fotos do evento</div><div class="sec-sub">Registre os melhores momentos</div></div>
+  </div>
+  <div class="photos-upload" onclick="document.getElementById('photo-input').click()">
+    <i class="ti ti-photo-up" aria-hidden="true"></i>
+    <span>Clique para adicionar fotos do evento</span>
+    <small>PNG ou JPG · múltiplas fotos permitidas</small>
+    <input type="file" id="photo-input" accept="image/*" multiple style="display:none" onchange="addPhotos(this)">
+  </div>
+  <div class="photos-grid" id="photos-grid"></div>
+</div>
+
+<!-- FOOTER -->
+<div class="card" id="section-footer" style="display:none">
+  <div class="footer-bar" style="border-top:none;padding-top:0">
+    <div class="saved" id="saved-msg"><i class="ti ti-circle-check" style="font-size:16px"></i>Fechamento salvo com sucesso!</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="window.print()"><i class="ti ti-file-type-pdf" style="font-size:14px"></i>Gerar relatório PDF</button>
+      <button class="btn btn-primary" onclick="saveClosing()"><i class="ti ti-device-floppy" style="font-size:15px"></i>Salvar fechamento</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let starVal=0;
+let charges=[];
+let refunds=[];
+const baseValues={ctr011:9800,ctr010:22000,ctr009:12400};
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+const events={
+  ctr011:{icon:'🎓',name:'Carlos Mendes',sub:'Formatura · 30/05/2026 · Sítio das Flores · 80 convidados previstos',previsto:80,checkin:76},
+  ctr010:{icon:'💒',name:'Família Costa',sub:'Casamento · 28/06/2026 · Sítio das Flores · 200 convidados previstos',previsto:200,checkin:188},
+  ctr009:{icon:'🎂',name:'Ana Paula Silva',sub:'Aniversário · 14/06/2026 · Salão Principal · 90 convidados previstos',previsto:90,checkin:84},
+};
+
+function loadEvent(val){
+  const sections=['section-guests','section-avaliacao','section-charges','section-obs','section-fotos','section-footer'];
+  if(!val){sections.forEach(function(s){document.getElementById(s).style.display='none';});document.getElementById('event-summary-box').style.display='none';return;}
+  const ev=events[val];
+  document.getElementById('ev-icon').textContent=ev.icon;
+  document.getElementById('ev-name').textContent=ev.name;
+  document.getElementById('ev-sub').textContent=ev.sub;
+  document.getElementById('event-summary-box').style.display='block';
+  document.getElementById('guests-previsto').textContent=ev.previsto;
+  document.getElementById('guests-checkin').textContent=ev.checkin;
+  document.getElementById('t-original').textContent=fmt(baseValues[val]);
+  document.getElementById('t-total').textContent=fmt(baseValues[val]);
+  sections.forEach(function(s){document.getElementById(s).style.display='block';});
+  charges=[];refunds=[];
+  renderCharges();calcTotal();
+  starVal=0;document.querySelectorAll('.star').forEach(function(s){s.classList.remove('on');});
+  document.getElementById('star-label').textContent='Clique para avaliar';
+  document.getElementById('real-adultos').value='';
+  document.getElementById('real-criancas').value='';
+  document.getElementById('guests-real-display').textContent='—';
+  document.getElementById('comp-diff').style.display='none';
+  document.getElementById('photos-grid').innerHTML='';
+  document.getElementById('obs-text').value='';
+}
+
+function calcDiff(){
+  const a=parseInt(document.getElementById('real-adultos').value)||0;
+  const c=parseInt(document.getElementById('real-criancas').value)||0;
+  const total=a+c;
+  document.getElementById('guests-real-display').textContent=total||'—';
+  if(!total)return;
+  const val=document.getElementById('sel-contract').value;
+  if(!val)return;
+  const previsto=events[val].previsto;
+  const diff=total-previsto;
+  const el=document.getElementById('comp-diff');
+  el.style.display='block';
+  if(diff>0){el.className='comp-diff diff-over';el.textContent='⚠️ '+diff+' convidado'+(diff===1?'':'s')+' a mais que o previsto — verifique se há cobrança adicional';}
+  else if(diff<0){el.className='comp-diff diff-under';el.textContent='ℹ️ '+Math.abs(diff)+' convidado'+(Math.abs(diff)===1?'':'s')+' a menos que o previsto — verifique se há reembolso';}
+  else{el.className='comp-diff diff-exact';el.textContent='✅ Exatamente o número previsto no contrato';}
+}
+
+function setStar(v){
+  starVal=v;
+  document.querySelectorAll('.star').forEach(function(s,i){s.classList.toggle('on',i<v);});
+  const labels=['','⭐ Ruim','⭐⭐ Regular','⭐⭐⭐ Bom','⭐⭐⭐⭐ Muito bom','⭐⭐⭐⭐⭐ Excelente!'];
+  document.getElementById('star-label').textContent=labels[v]||'';
+}
+
+function addCharge(tipo){
+  const isCharge=tipo==='cobrança';
+  const typeEl=document.getElementById(isCharge?'new-charge-type':'new-refund-type');
+  const valEl=document.getElementById(isCharge?'new-charge-val':'new-refund-val');
+  const descEl=document.getElementById(isCharge?'new-charge-desc':'new-refund-desc');
+  if(!valEl.value)return;
+  const item={type:typeEl.value,val:parseMoney(valEl.value),desc:descEl.value};
+  if(isCharge)charges.push(item);else refunds.push(item);
+  valEl.value='';descEl.value='';
+  renderCharges();calcTotal();
+}
+
+function renderCharges(){
+  renderChargeList('charge-rows',charges,'cobrança');
+  renderChargeList('refund-rows',refunds,'reembolso');
+}
+
+function renderChargeList(elId,list,tipo){
+  const el=document.getElementById(elId);
+  el.innerHTML='';
+  if(!list.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px">Nenhum '+tipo+' adicionado</div>';return;}
+  list.forEach(function(item,i){
+    const div=document.createElement('div');div.className='charge-row';
+    div.innerHTML='<div class="charge-type">'+item.type+(item.desc?' — <span style="font-weight:400;color:var(--text2)">'+item.desc+'</span>':'')+'</div><div style="font-size:13px;font-weight:500;color:'+(tipo==='cobrança'?'var(--red)':'var(--accent)')+'">'+fmt(item.val)+'</div><div></div><button class="charge-rm" onclick="removeItem(\''+tipo+'\','+i+')" aria-label="Remover"><i class="ti ti-trash" style="font-size:12px"></i></button>';
+    el.appendChild(div);
+  });
+}
+
+function removeItem(tipo,i){
+  if(tipo==='cobrança')charges.splice(i,1);else refunds.splice(i,1);
+  renderCharges();calcTotal();
+}
+
+function calcTotal(){
+  const val=document.getElementById('sel-contract').value;
+  if(!val)return;
+  const base=baseValues[val];
+  const totalCharges=charges.reduce(function(s,c){return s+c.val;},0);
+  const totalRefunds=refunds.reduce(function(s,c){return s+c.val;},0);
+  const total=base+totalCharges-totalRefunds;
+  const cr=document.getElementById('t-charge-row');
+  const rr=document.getElementById('t-refund-row');
+  cr.style.display=totalCharges?'flex':'none';
+  rr.style.display=totalRefunds?'flex':'none';
+  document.getElementById('t-charges').textContent='+ '+fmt(totalCharges);
+  document.getElementById('t-refunds').textContent='- '+fmt(totalRefunds);
+  document.getElementById('t-total').textContent=fmt(total);
+}
+
+function addPhotos(inp){
+  const grid=document.getElementById('photos-grid');
+  Array.from(inp.files).forEach(function(f){
+    const r=new FileReader();
+    r.onload=function(e){
+      const div=document.createElement('div');div.className='photo-thumb';
+      div.innerHTML='<img src="'+e.target.result+'" alt="Foto do evento"><button class="photo-rm" onclick="this.parentNode.remove()" aria-label="Remover foto"><i class="ti ti-x" style="font-size:10px"></i></button>';
+      grid.appendChild(div);
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value='';
+}
+
+function saveClosing(){
+  const msg=document.getElementById('saved-msg');
+  msg.classList.add('show');
+  setTimeout(function(){msg.classList.remove('show');},4000);
+}
+
+function maskMoney(el){let v=el.value.replace(/\D/g,'');v=(parseInt(v||0)/100).toFixed(2);el.value=v.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+function parseMoney(s){return parseFloat((s||'0').replace(/\./g,'').replace(',','.'))||0;}
+function fmt(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+</script>
+</body>
+</html>

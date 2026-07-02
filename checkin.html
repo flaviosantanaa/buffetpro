@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:700px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-full{width:100%;justify-content:center}
+.tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px}
+.tab{flex:1;padding:10px;font-size:13.5px;font-weight:500;cursor:pointer;color:var(--text2);background:transparent;border:none;font-family:var(--font);transition:all 0.15s;text-align:center}
+.tab.active{background:var(--accent);color:#fff}
+.page{display:none}.page.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+/* SCANNER */
+.scanner-area{background:#000;border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:1;max-width:320px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.scanner-placeholder{text-align:center;color:#666;padding:20px}
+.scanner-placeholder i{font-size:48px;display:block;margin-bottom:12px;color:#444}
+.scanner-frame{position:absolute;inset:20%;border:2px solid var(--accent2);border-radius:8px}
+.scanner-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent2);animation:scan 2s infinite;box-shadow:0 0 8px var(--accent2)}
+@keyframes scan{0%{top:0}100%{top:100%}}
+.scanner-active{display:block}
+.scanner-inactive{display:none}
+/* BUSCA MANUAL */
+.search-box{display:flex;gap:8px;margin-bottom:16px}
+.search-input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none}
+.search-input:focus{border-color:var(--accent)}
+.guest-result{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:pointer;transition:all 0.15s;margin-bottom:8px;background:var(--surface)}
+.guest-result:hover{border-color:var(--accent);background:var(--accent-light)}
+.guest-result.checked-in{border-color:var(--accent);background:var(--accent-light);opacity:0.7}
+.guest-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.guest-name{font-size:14px;font-weight:500;color:var(--text)}
+.guest-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11.5px;font-weight:600}
+.b-conf{background:var(--accent-light);color:var(--accent)}
+.b-pend{background:var(--surface2);color:var(--text3)}
+.b-ci{background:var(--blue-light);color:var(--blue)}
+/* SUCESSO CHECK-IN */
+.checkin-success{display:none;text-align:center;padding:28px 20px;background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius);margin-bottom:16px}
+.checkin-success.show{display:block}
+.checkin-success i{font-size:48px;color:var(--accent);display:block;margin-bottom:10px}
+.checkin-success .cname{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
+.checkin-success .csub{font-size:13.5px;color:var(--text2)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
+.stat-val{font-size:26px;font-weight:600;color:var(--text);line-height:1}
+.stat-label{font-size:11.5px;color:var(--text3);margin-top:4px}
+.prog-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.prog-fill{height:100%;border-radius:4px;background:var(--accent);transition:width 0.4s}
+/* CONVIDADO PAGE */
+.guest-page{max-width:380px;margin:0 auto;padding:20px 0}
+.event-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;margin-bottom:16px}
+.event-icon{font-size:48px;margin-bottom:12px}
+.event-name{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
+.event-date{font-size:14px;color:var(--text2);margin-bottom:20px}
+.guest-info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.gi-name{font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px}
+.gi-type{font-size:13px;color:var(--text3);margin-bottom:16px}
+.qr-wrap{display:flex;justify-content:center;padding:16px;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:16px}
+.confirm-btns{display:flex;gap:8px}
+.btn-confirm{background:var(--accent);color:#fff;border-color:var(--accent);flex:1;justify-content:center}
+.btn-recuse{background:var(--red-light);color:var(--red);border-color:var(--red);flex:1;justify-content:center}
+.confirmed-msg{display:none;text-align:center;padding:16px;background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius-sm)}
+.confirmed-msg.show{display:block}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="font-size:18px;font-weight:600;color:var(--text)" id="page-title">Check-in · Entrada do evento</div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn" onclick="showPage('guest-view')" id="btn-guest-view"><i class="ti ti-qrcode" style="font-size:14px"></i>Ver como convidado</button>
+    <button class="btn" onclick="showPage('checkin')" id="btn-checkin" style="display:none"><i class="ti ti-login" style="font-size:14px"></i>Voltar ao check-in</button>
+  </div>
+</div>
+
+<!-- PÁGINA CHECK-IN (STAFF) -->
+<div class="page active" id="page-checkin">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="s-total">10</div><div class="stat-label">Convidados</div></div>
+    <div class="stat"><div class="stat-val" id="s-ci" style="color:var(--accent)">2</div><div class="stat-label">Check-in feito</div></div>
+    <div class="stat"><div class="stat-val" id="s-pend" style="color:var(--amber)">8</div><div class="stat-label">Aguardando</div></div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="s-prog" style="width:20%"></div></div>
+  <div style="font-size:12px;color:var(--text3);margin-bottom:20px;text-align:center">2 de 10 chegaram · 20%</div>
+
+  <div class="checkin-success" id="checkin-success">
+    <i class="ti ti-circle-check"></i>
+    <div class="cname" id="ci-name"></div>
+    <div class="csub" id="ci-sub"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('camera',this)"><i class="ti ti-camera" style="font-size:14px;margin-right:5px"></i>Câmera / QR Code</button>
+    <button class="tab" onclick="switchTab('manual',this)"><i class="ti ti-search" style="font-size:14px;margin-right:5px"></i>Busca manual</button>
+  </div>
+
+  <!-- CÂMERA -->
+  <div class="page active" id="tab-camera">
+    <div class="card" style="text-align:center">
+      <div class="scanner-area">
+        <div class="scanner-placeholder" id="scanner-placeholder">
+          <i class="ti ti-camera-off"></i>
+          <div style="font-size:14px;color:#888;margin-bottom:16px">Câmera não ativa</div>
+          <div style="font-size:12px;color:#666">Clique em "Ativar câmera" para escanear o QR Code do convidado</div>
+        </div>
+        <div class="scanner-inactive" id="scanner-active" style="width:100%;height:100%;position:relative">
+          <div class="scanner-frame"></div>
+          <div class="scanner-line"></div>
+          <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#fff;font-size:12px">Aponte para o QR Code</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="toggleCamera(this)" id="camera-btn" style="margin-bottom:12px"><i class="ti ti-camera" style="font-size:14px"></i>Ativar câmera</button>
+      <div style="font-size:12px;color:var(--text3)">ou simule um check-in pelo QR Code:</div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-sm" onclick="simulateQR(1)">Simular: Marcos</button>
+        <button class="btn btn-sm" onclick="simulateQR(2)">Simular: Camila</button>
+        <button class="btn btn-sm" onclick="simulateQR(5)">Simular: Roberto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSCA MANUAL -->
+  <div class="page" id="tab-manual">
+    <div class="search-box">
+      <input type="text" class="search-input" id="manual-search" placeholder="Buscar convidado pelo nome..." oninput="searchGuests(this.value)">
+    </div>
+    <div id="search-results"></div>
+  </div>
+
+</div>
+
+<!-- PÁGINA CONVIDADO -->
+<div class="page" id="page-guest-view">
+  <div class="guest-page">
+    <div class="event-card">
+      <div class="event-icon">🎂</div>
+      <div class="event-name">Aniversário Ana Paula Silva</div>
+      <div class="event-date">📅 Sábado, 14 de junho de 2026 · 19h00</div>
+      <div style="font-size:13px;color:var(--text3)">🏛️ Salão Principal · Rua das Flores, 100</div>
+    </div>
+
+    <div class="guest-info-card">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Seu convite</div>
+      <div class="gi-name">Marcos Pereira</div>
+      <div class="gi-type">👤 Adulto · Família Pereira</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px">Apresente este QR Code na entrada do evento</div>
+      <div class="qr-wrap" id="guest-qr"></div>
+      <div style="font-size:12px;color:var(--text3);text-align:center">Código: CHECKIN:1:Marcos Pereira</div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:12px">Confirmar presença</div>
+      <div class="confirmed-msg" id="confirmed-msg">
+        <i class="ti ti-circle-check" style="font-size:22px;color:var(--accent);display:block;margin-bottom:6px"></i>
+        <div style="font-size:14px;font-weight:500;color:var(--accent)">Presença confirmada!</div>
+        <div style="font-size:12.5px;color:var(--text2);margin-top:4px">Até lá! 🎉</div>
+      </div>
+      <div class="confirm-btns" id="confirm-btns">
+        <button class="btn btn-confirm" onclick="confirmPresence()"><i class="ti ti-check" style="font-size:14px"></i>Vou comparecer</button>
+        <button class="btn btn-recuse" onclick="recusePresence()"><i class="ti ti-x" style="font-size:14px"></i>Não poderei ir</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:12px;color:var(--text3);margin-top:8px">
+      Powered by BuffetPro · Em caso de dúvidas, entre em contato com o organizador
+    </div>
+  </div>
+</div>
+
+<script>
+let cameraOn=false;
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let checkedIn=[1,4]; // IDs já com check-in
+
+const guests=[
+  {id:1,name:'Marcos Pereira',type:'adulto',group:'Família Pereira'},
+  {id:2,name:'Camila Pereira',type:'adulto',group:'Família Pereira'},
+  {id:3,name:'Lucas Pereira',type:'crianca',group:'Família Pereira'},
+  {id:4,name:'Sandra Lima',type:'adulto',group:'Amigos da faculdade'},
+  {id:5,name:'Roberto Lima',type:'adulto',group:'Amigos da faculdade'},
+  {id:6,name:'Fernanda Costa',type:'adulto',group:'Família Costa'},
+  {id:7,name:'Paulo Costa',type:'adulto',group:'Família Costa'},
+  {id:8,name:'Maria',type:'crianca',group:'Família Costa'},
+  {id:9,name:'Juliana Souza',type:'adulto',group:'Colegas de trabalho'},
+  {id:10,name:'André Souza',type:'adulto',group:'Colegas de trabalho'},
+];
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+// Gerar QR do convidado na página do convidado
+(function(){
+  try{
+    new QRCode(document.getElementById('guest-qr'),{text:'CHECKIN:1:Marcos Pereira',width:180,height:180,colorDark:'#1a1916',colorLight:'#ffffff'});
+  }catch(e){
+    document.getElementById('guest-qr').innerHTML='<div style="width:180px;height:180px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3)">QR Code</div>';
+  }
+})();
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){if(p.id.startsWith('page-'))p.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  const isGuest=id==='guest-view';
+  document.getElementById('page-title').textContent=isGuest?'Convite do convidado':'Check-in · Entrada do evento';
+  document.getElementById('btn-guest-view').style.display=isGuest?'none':'inline-flex';
+  document.getElementById('btn-checkin').style.display=isGuest?'inline-flex':'none';
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('tab-camera').classList.remove('active');
+  document.getElementById('tab-manual').classList.remove('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='manual')searchGuests('');
+}
+
+function toggleCamera(btn){
+  cameraOn=!cameraOn;
+  document.getElementById('scanner-placeholder').style.display=cameraOn?'none':'flex';
+  document.getElementById('scanner-active').className=cameraOn?'scanner-active':'scanner-inactive';
+  btn.innerHTML=cameraOn?'<i class="ti ti-camera-off" style="font-size:14px"></i> Desativar câmera':'<i class="ti ti-camera" style="font-size:14px"></i> Ativar câmera';
+  btn.style.background=cameraOn?'var(--red-light)':'var(--accent)';
+  btn.style.color=cameraOn?'var(--red)':'#fff';
+  btn.style.borderColor=cameraOn?'var(--red)':'var(--accent)';
+}
+
+function simulateQR(id){
+  doCheckin(id);
+}
+
+function doCheckin(id){
+  const g=guests.find(function(x){return x.id===id;});
+  if(!g)return;
+  const already=checkedIn.includes(id);
+  const success=document.getElementById('checkin-success');
+  document.getElementById('ci-name').textContent=already?'Já fez check-in: '+g.name:g.name+' ✓';
+  document.getElementById('ci-sub').textContent=already?'Este convidado já foi registrado na entrada.':(g.type==='adulto'?'👤 Adulto':'👶 Criança')+' · '+g.group+(already?'':' — Check-in registrado!');
+  success.style.background=already?'var(--amber-light)':'var(--accent-light)';
+  success.style.borderColor=already?'var(--amber)':'var(--accent)';
+  success.querySelector('i').style.color=already?'var(--amber)':'var(--accent)';
+  if(!already){checkedIn.push(id);updateStats();}
+  success.classList.add('show');
+  setTimeout(function(){success.classList.remove('show');},4000);
+}
+
+function updateStats(){
+  const ci=checkedIn.length;
+  const total=guests.length;
+  document.getElementById('s-ci').textContent=ci;
+  document.getElementById('s-pend').textContent=total-ci;
+  document.getElementById('s-prog').style.width=Math.round(ci/total*100)+'%';
+}
+
+function searchGuests(q){
+  const container=document.getElementById('search-results');
+  container.innerHTML='';
+  const filtered=!q?guests:guests.filter(function(g){return g.name.toLowerCase().includes(q.toLowerCase())||g.group.toLowerCase().includes(q.toLowerCase());});
+  if(!filtered.length){container.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Nenhum convidado encontrado</div>';return;}
+  filtered.forEach(function(g){
+    const ci=checkedIn.includes(g.id);
+    const div=document.createElement('div');
+    div.className='guest-result'+(ci?' checked-in':'');
+    const initials=g.name.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();
+    div.innerHTML='<div class="guest-avatar">'+initials+'</div><div style="flex:1;min-width:0"><div class="guest-name">'+g.name+'</div><div class="guest-sub">'+(g.type==='adulto'?'👤 Adulto':'👶 Criança')+' · '+g.group+'</div></div><span class="badge '+(ci?'b-ci':'b-pend')+'">'+( ci?'✅ Feito':'⏳ Pendente')+'</span>';
+    if(!ci)div.onclick=function(){doCheckin(g.id);renderResult(g.id,div);};
+    container.appendChild(div);
+  });
+}
+
+function renderResult(id,div){
+  div.className='guest-result checked-in';
+  div.querySelector('.badge').className='badge b-ci';
+  div.querySelector('.badge').textContent='✅ Feito';
+  div.onclick=null;
+}
+
+function confirmPresence(){
+  document.getElementById('confirmed-msg').classList.add('show');
+  document.getElementById('confirm-btns').style.display='none';
+}
+
+function recusePresence(){
+  document.getElementById('confirm-btns').innerHTML='<div style="text-align:center;padding:10px;font-size:13.5px;color:var(--text3)">Presença recusada. Obrigado por avisar.</div>';
+}
+
+updateStats();
+searchGuests('');
+</script>
+</body>
+</html>

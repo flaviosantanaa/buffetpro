@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:1000px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.si-green{background:var(--accent-light);color:var(--accent)}
+.si-amber{background:var(--amber-light);color:var(--amber)}
+.si-blue{background:var(--blue-light);color:var(--blue)}
+.si-red{background:var(--red-light);color:var(--red)}
+.sec-title{font-size:14px;font-weight:600;color:var(--text)}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:600;color:var(--text);line-height:1}
+.kpi-sub{font-size:11.5px;color:var(--text3);margin-top:4px}
+.kpi-trend{font-size:12px;margin-top:4px;display:flex;align-items:center;gap:3px;color:var(--accent)}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.pchip{padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;font-family:var(--font);transition:all 0.15s}
+.pchip:hover{background:var(--surface2)}
+.pchip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tbl-wrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;background:var(--surface2)}
+td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600}
+.b-ativo{background:var(--accent-light);color:var(--accent)}
+.b-trial{background:var(--blue-light);color:var(--blue)}
+.b-canc{background:var(--red-light);color:var(--red)}
+.b-atraso{background:var(--amber-light);color:var(--amber)}
+.plan-tag{font-size:11px;padding:1px 7px;border-radius:20px;font-weight:600;background:var(--surface2);color:var(--text2)}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin-bottom:8px}
+.cbar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.cbar{width:100%;border-radius:4px 4px 0 0;transition:height 0.4s;background:var(--accent)}
+.cbar-label{font-size:10.5px;color:var(--text3)}
+.cbar-val{font-size:10px;color:var(--text2);font-weight:500}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+.super-badge{background:var(--amber);color:#fff;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;margin-left:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Painel do proprietário <span class="super-badge">SUPER ADMIN</span></div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Faturamento e gestão de todos os assinantes</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn" onclick="window.print()"><i class="ti ti-download" style="font-size:14px"></i>Exportar relatório</button>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi">
+    <div class="kpi-label">MRR (receita mensal)</div>
+    <div class="kpi-value" style="color:var(--accent)">R$ 2.847</div>
+    <div class="kpi-trend"><i class="ti ti-trending-up" style="font-size:13px"></i>+18% vs mês anterior</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Assinantes ativos</div>
+    <div class="kpi-value">18</div>
+    <div class="kpi-trend"><i class="ti ti-trending-up" style="font-size:13px"></i>+3 este mês</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Receita semanal</div>
+    <div class="kpi-value">R$ 712</div>
+    <div class="kpi-sub">Semana atual</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Churn (cancelamentos)</div>
+    <div class="kpi-value" style="color:var(--red)">1</div>
+    <div class="kpi-sub">Este mês</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Receita anual (projeção)</div>
+    <div class="kpi-value">R$ 34.164</div>
+    <div class="kpi-sub">Com base no MRR atual</div>
+  </div>
+</div>
+
+<!-- GRÁFICO -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-green"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Evolução do faturamento</div></div>
+    <div style="display:flex;gap:6px;margin-left:auto">
+      <div class="pchip sel" onclick="setChartPeriod('mensal',this)">Mensal</div>
+      <div class="pchip" onclick="setChartPeriod('semanal',this)">Semanal</div>
+    </div>
+  </div>
+  <div class="chart-bars" id="chart-bars"></div>
+  <div style="text-align:center;font-size:12px;color:var(--text3)" id="chart-period-label">Jan–Jun 2026</div>
+</div>
+
+<!-- ASSINANTES -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-blue"><i class="ti ti-users" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Assinantes</div><div class="sec-sub">Todos os admins cadastrados</div></div>
+  </div>
+  <div class="filter-bar">
+    <div class="pchip sel" onclick="setFilter('todos',this)">Todos</div>
+    <div class="pchip" onclick="setFilter('ativo',this)">✅ Ativos</div>
+    <div class="pchip" onclick="setFilter('trial',this)">🔵 Trial</div>
+    <div class="pchip" onclick="setFilter('atraso',this)">⚠️ Em atraso</div>
+    <div class="pchip" onclick="setFilter('cancelado',this)">❌ Cancelados</div>
+    <input type="text" placeholder="Buscar..." oninput="searchSubs(this.value)" style="padding:6px 12px;border:1px solid var(--border);border-radius:20px;font-size:13px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;margin-left:auto">
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Negócio</th><th>Admin</th><th>Plano</th><th>Usuários</th><th>Valor</th><th>Próx. cobrança</th><th>Status</th><th>Ação</th></tr></thead>
+      <tbody id="subs-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let curFilter='todos';
+
+const subs=[
+  {biz:'Buffet Sabor & Arte',admin:'Marcelo Pereira',plan:'Pro',users:3,val:207,next:'15/07/2026',status:'ativo'},
+  {biz:'Espaço das Flores',admin:'Ana Lima',plan:'Business',users:5,val:299,next:'01/07/2026',status:'ativo'},
+  {biz:'Churrascaria do Zé',admin:'José Santos',plan:'Starter',users:1,val:89,next:'10/07/2026',status:'ativo'},
+  {biz:'Buffet Elegance',admin:'Carla Mendes',plan:'Pro',users:2,val:178,next:'20/07/2026',status:'ativo'},
+  {biz:'Sítio Bela Vista',admin:'Roberto Costa',plan:'Business',users:4,val:299,next:'05/07/2026',status:'atraso'},
+  {biz:'Espaço Gourmet SP',admin:'Fernanda Alves',plan:'Pro',users:1,val:149,next:'12/07/2026',status:'ativo'},
+  {biz:'Buffet Familiar',admin:'Paulo Souza',plan:'Starter',users:1,val:89,next:'08/07/2026',status:'trial'},
+  {biz:'Casa de Festas Aurora',admin:'Marina Luz',plan:'Pro',users:2,val:178,next:'18/07/2026',status:'ativo'},
+  {biz:'Eventos Premium',admin:'Lucas Faria',plan:'Business',users:5,val:299,next:'25/07/2026',status:'ativo'},
+  {biz:'Buffet da Vó',admin:'Teresa Lima',plan:'Starter',users:1,val:89,next:'—',status:'cancelado'},
+];
+
+const statusLabel={ativo:'✅ Ativo',trial:'🔵 Trial',atraso:'⚠️ Em atraso',cancelado:'❌ Cancelado'};
+const statusClass={ativo:'b-ativo',trial:'b-trial',atraso:'b-atraso',cancelado:'b-canc'};
+const planColors={Starter:'background:var(--surface2);color:var(--text2)',Pro:'background:var(--blue-light);color:var(--blue)',Business:'background:var(--amber-light);color:var(--amber)'};
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+function renderSubs(list){
+  const tbody=document.getElementById('subs-body');
+  tbody.innerHTML='';
+  if(!list.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text3)">Nenhum assinante encontrado</td></tr>';return;}
+  list.forEach(function(s){
+    const tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td style="font-weight:500;color:var(--text)">'+s.biz+'</td>'+
+      '<td>'+s.admin+'</td>'+
+      '<td><span class="plan-tag" style="'+planColors[s.plan]+'">'+s.plan+'</span></td>'+
+      '<td style="text-align:center">'+s.users+'</td>'+
+      '<td style="font-weight:600;color:var(--accent)">R$ '+s.val+'/mês</td>'+
+      '<td>'+s.next+'</td>'+
+      '<td><span class="badge '+statusClass[s.status]+'">'+statusLabel[s.status]+'</span></td>'+
+      '<td><button class="btn btn-sm" onclick="showDetail(\''+s.biz+'\')">Ver</button></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function setFilter(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.filter-bar .pchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  const list=f==='todos'?subs:subs.filter(function(s){return s.status===f;});
+  renderSubs(list);
+}
+
+function searchSubs(q){
+  const list=!q?subs:subs.filter(function(s){return s.biz.toLowerCase().includes(q.toLowerCase())||s.admin.toLowerCase().includes(q.toLowerCase());});
+  renderSubs(list);
+}
+
+function showDetail(biz){alert('Detalhes de: '+biz+'\n\n(No app real, abrirá uma página com histórico de pagamentos, usuários cadastrados e opções de gerenciamento da conta)');}
+
+const monthlyData=[{l:'Jan',v:1240},{l:'Fev',v:1480},{l:'Mar',v:1820},{l:'Abr',v:2100},{l:'Mai',v:2410},{l:'Jun',v:2847}];
+const weeklyData=[{l:'S1',v:580},{l:'S2',v:640},{l:'S3',v:710},{l:'S4',v:712}];
+
+function renderChart(data){
+  const el=document.getElementById('chart-bars');el.innerHTML='';
+  const maxV=Math.max.apply(null,data.map(function(d){return d.v;}));
+  data.forEach(function(d){
+    const h=Math.round(d.v/maxV*110);
+    const wrap=document.createElement('div');wrap.className='cbar-wrap';
+    wrap.innerHTML='<div class="cbar-val">R$ '+d.v.toLocaleString('pt-BR')+'</div><div class="cbar" style="height:'+h+'px"></div><div class="cbar-label">'+d.l+'</div>';
+    el.appendChild(wrap);
+  });
+}
+
+function setChartPeriod(p,btn){
+  document.querySelectorAll('.card .pchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  renderChart(p==='mensal'?monthlyData:weeklyData);
+  document.getElementById('chart-period-label').textContent=p==='mensal'?'Jan–Jun 2026':'Semanas de junho 2026';
+}
+
+renderChart(monthlyData);
+renderSubs(subs);
+</script>
+</body>
+</html>

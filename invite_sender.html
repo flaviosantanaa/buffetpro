@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:800px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-wpp{background:#25d366;color:#fff;border-color:#25d366}
+.btn-wpp:hover{background:#128c7e}
+.btn-api{background:var(--blue-light);color:var(--blue);border-color:var(--blue)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.si-green{background:var(--accent-light);color:var(--accent)}
+.si-wpp{background:#d5f5e3;color:#1a7a45}
+.si-blue{background:var(--blue-light);color:var(--blue)}
+.si-amber{background:var(--amber-light);color:var(--amber)}
+.sec-title{font-size:14px;font-weight:600;color:var(--text)}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none;transition:border-color 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:100px;line-height:1.6}
+.field-hint{font-size:11px;color:var(--text3);margin-top:3px}
+/* VARS */
+.vars{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.var-tag{font-size:11.5px;padding:3px 9px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-family:monospace;transition:all 0.15s}
+.var-tag:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+/* PREVIEW */
+.preview-bubble{background:#e8fcd4;border-radius:12px 12px 2px 12px;padding:12px 14px;max-width:320px;font-size:13.5px;color:#1a1916;line-height:1.6;position:relative;word-break:break-word}
+.preview-bubble::after{content:'';position:absolute;bottom:0;right:-8px;width:0;height:0;border-left:8px solid #e8fcd4;border-bottom:8px solid transparent}
+.preview-time{font-size:11px;color:#6b6760;text-align:right;margin-top:4px}
+.preview-link{color:#1a5276;text-decoration:underline;font-weight:500}
+/* GUESTS TABLE */
+.guest-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.guest-row:last-child{border-bottom:none}
+.guest-check{width:18px;height:18px;border-radius:4px;border:1px solid var(--border);cursor:pointer;accent-color:var(--accent);flex-shrink:0}
+.gavatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.gname{font-size:13.5px;font-weight:500;color:var(--text)}
+.gphone{font-size:12px;color:var(--text3)}
+.gbadge{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:600;flex-shrink:0}
+.gb-pend{background:var(--surface2);color:var(--text3)}
+.gb-sent{background:var(--accent-light);color:var(--accent)}
+.gb-conf{background:var(--blue-light);color:var(--blue)}
+.gb-notel{background:var(--red-light);color:var(--red)}
+/* METHOD SELECT */
+.method-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.method-card{border:2px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all 0.2s;text-align:center}
+.method-card:hover{border-color:var(--text3)}
+.method-card.sel{border-color:var(--accent);background:var(--accent-light)}
+.method-card.sel-wpp{border-color:#25d366;background:#d5f5e3}
+.method-card.sel-api{border-color:var(--blue);background:var(--blue-light)}
+.method-icon{font-size:28px;display:block;margin-bottom:6px}
+.method-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.method-sub{font-size:12px;color:var(--text2)}
+.method-tag{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;margin-top:6px;display:inline-block}
+.tag-free{background:var(--accent-light);color:var(--accent)}
+.tag-paid{background:var(--amber-light);color:var(--amber)}
+/* PROGRESS */
+.send-progress{display:none;background:var(--surface2);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.send-progress.show{display:block}
+.prog-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:10px 0}
+.prog-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s}
+/* STATS */
+.send-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sstat{background:var(--surface2);border-radius:var(--radius-sm);padding:10px;text-align:center}
+.sstat-val{font-size:20px;font-weight:600;color:var(--text)}
+.sstat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Envio de convites</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Aniversário Ana Paula Silva · 14/06/2026</div>
+  </div>
+  <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+</div>
+
+<!-- STATS -->
+<div class="send-stats">
+  <div class="sstat"><div class="sstat-val" id="st-total">10</div><div class="sstat-label">Convidados</div></div>
+  <div class="sstat"><div class="sstat-val" id="st-sent" style="color:var(--accent)">4</div><div class="sstat-label">Enviados</div></div>
+  <div class="sstat"><div class="sstat-val" id="st-conf" style="color:var(--blue)">3</div><div class="sstat-label">Confirmados</div></div>
+  <div class="sstat"><div class="sstat-val" id="st-notel" style="color:var(--red)">1</div><div class="sstat-label">Sem telefone</div></div>
+</div>
+
+<!-- MENSAGEM -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-wpp"><i class="ti ti-message-2" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Mensagem do convite</div><div class="sec-sub">Personalize o texto que cada convidado vai receber</div></div>
+  </div>
+
+  <div style="font-size:11.5px;font-weight:500;color:var(--text2);margin-bottom:6px">Variáveis disponíveis — clique para inserir no texto:</div>
+  <div class="vars">
+    <span class="var-tag" onclick="insertVar('{{nome_convidado}}')">{{nome_convidado}}</span>
+    <span class="var-tag" onclick="insertVar('{{nome_evento}}')">{{nome_evento}}</span>
+    <span class="var-tag" onclick="insertVar('{{data_evento}}')">{{data_evento}}</span>
+    <span class="var-tag" onclick="insertVar('{{horario}}')">{{horario}}</span>
+    <span class="var-tag" onclick="insertVar('{{local}}')">{{local}}</span>
+    <span class="var-tag" onclick="insertVar('{{link_convite}}')">{{link_convite}}</span>
+    <span class="var-tag" onclick="insertVar('{{nome_anfitriao}}')">{{nome_anfitriao}}</span>
+  </div>
+
+  <div class="field">
+    <label>Texto da mensagem</label>
+    <textarea id="msg-text" oninput="updatePreview()">Olá {{nome_convidado}}! 🎉
+
+Você está convidado(a) para o {{nome_evento}}!
+
+📅 Data: {{data_evento}}
+⏰ Horário: {{horario}}
+📍 Local: {{local}}
+
+Acesse seu convite e QR Code pelo link abaixo:
+{{link_convite}}
+
+Confirme sua presença pelo link! Será um prazer ter você conosco. 😊
+
+— {{nome_anfitriao}}</textarea>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="btn btn-sm" onclick="loadTemplate('formal')"><i class="ti ti-file-text" style="font-size:12px"></i>Template formal</button>
+    <button class="btn btn-sm" onclick="loadTemplate('simples')"><i class="ti ti-message" style="font-size:12px"></i>Template simples</button>
+    <button class="btn btn-sm" onclick="loadTemplate('festivo')"><i class="ti ti-confetti" style="font-size:12px"></i>Template festivo</button>
+  </div>
+
+  <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:10px">Pré-visualização — como ficará para o convidado:</div>
+  <div style="background:var(--surface2);border-radius:var(--radius);padding:16px;display:flex;justify-content:flex-end">
+    <div>
+      <div class="preview-bubble" id="preview-bubble"></div>
+      <div class="preview-time">14:32 ✓✓</div>
+    </div>
+  </div>
+</div>
+
+<!-- MÉTODO DE ENVIO -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-wpp"><i class="ti ti-send" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Método de envio</div><div class="sec-sub">Escolha como os convites serão enviados</div></div>
+  </div>
+  <div class="method-cards">
+    <div class="method-card sel-wpp" id="mc-web" onclick="selMethod('web')">
+      <span class="method-icon">💬</span>
+      <div class="method-name">WhatsApp Web</div>
+      <div class="method-sub">Abre o WhatsApp um a um. Você confirma cada envio.</div>
+      <span class="method-tag tag-free">Gratuito</span>
+    </div>
+    <div class="method-card" id="mc-api" onclick="selMethod('api')">
+      <span class="method-icon">🚀</span>
+      <div class="method-name">API Automática</div>
+      <div class="method-sub">Envia para todos de uma vez, sem clique manual.</div>
+      <span class="method-tag tag-paid">~R$ 0,10 por msg</span>
+    </div>
+  </div>
+
+  <div id="info-web" style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text2);margin-bottom:14px">
+    <i class="ti ti-info-circle" style="font-size:14px;vertical-align:-2px;margin-right:5px;color:var(--blue)"></i>
+    <strong>Como funciona:</strong> o app vai abrir o WhatsApp Web no seu navegador, um convidado por vez, com a mensagem já preenchida. Você só confirma o envio clicando em "Enviar" no WhatsApp. Ideal para listas menores.
+  </div>
+
+  <div id="info-api" style="display:none;background:var(--amber-light);border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--amber);margin-bottom:14px">
+    <i class="ti ti-info-circle" style="font-size:14px;vertical-align:-2px;margin-right:5px"></i>
+    <strong>Como funciona:</strong> usando a API oficial do WhatsApp Business, o app envia para todos automaticamente em segundos. Custo aproximado de R$ 0,10 por mensagem. Você precisa ter uma conta WhatsApp Business configurada.
+  </div>
+</div>
+
+<!-- LISTA DE CONVIDADOS -->
+<div class="card">
+  <div class="sec-head">
+    <div class="sec-icon si-green"><i class="ti ti-users" aria-hidden="true"></i></div>
+    <div><div class="sec-title">Selecionar convidados</div><div class="sec-sub">Escolha quem vai receber agora</div></div>
+    <div style="display:flex;gap:6px;margin-left:auto;flex-wrap:wrap">
+      <button class="btn btn-sm" onclick="selAll(true)">Selecionar todos</button>
+      <button class="btn btn-sm" onclick="selAll(false)">Limpar seleção</button>
+      <button class="btn btn-sm" onclick="selPending()">Só pendentes</button>
+    </div>
+  </div>
+
+  <div id="guest-list"></div>
+</div>
+
+<!-- PROGRESSO DE ENVIO -->
+<div class="send-progress" id="send-progress">
+  <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px" id="prog-title">Enviando convites...</div>
+  <div style="font-size:13px;color:var(--text2)" id="prog-sub"></div>
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <div id="prog-log" style="font-size:12px;color:var(--text3);max-height:80px;overflow-y:auto;margin-top:6px"></div>
+</div>
+
+<!-- FOOTER -->
+<div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:4px">
+  <div style="font-size:13px;color:var(--text3);display:flex;align-items:center;gap:5px" id="sel-count">0 convidados selecionados</div>
+  <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn" onclick="window.print()"><i class="ti ti-printer" style="font-size:14px"></i>Imprimir QR Codes</button>
+    <button class="btn btn-wpp" id="send-btn" onclick="startSend()"><i class="ti ti-brand-whatsapp" style="font-size:15px"></i>Enviar convites</button>
+  </div>
+</div>
+
+<script>
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let curMethod='web';
+
+const guests=[
+  {id:1,name:'Marcos Pereira',phone:'11990010001',status:'sent',confirmed:true},
+  {id:2,name:'Camila Pereira',phone:'11990010002',status:'sent',confirmed:true},
+  {id:3,name:'Lucas Pereira',phone:'',status:'notel',confirmed:false},
+  {id:4,name:'Sandra Lima',phone:'11990020001',status:'sent',confirmed:true},
+  {id:5,name:'Roberto Lima',phone:'11990020002',status:'pending',confirmed:false},
+  {id:6,name:'Fernanda Costa',phone:'11990030001',status:'pending',confirmed:false},
+  {id:7,name:'Paulo Costa',phone:'11990030002',status:'pending',confirmed:false},
+  {id:8,name:'Maria (6 anos)',phone:'',status:'notel',confirmed:false},
+  {id:9,name:'Juliana Souza',phone:'11990040001',status:'sent',confirmed:false},
+  {id:10,name:'André Souza',phone:'11990040002',status:'pending',confirmed:false},
+];
+
+const statusLabel={pending:'⏳ Pendente',sent:'✅ Enviado',confirmed:'💬 Confirmado',notel:'📵 Sem telefone'};
+const statusClass={pending:'gb-pend',sent:'gb-sent',confirmed:'gb-conf',notel:'gb-notel'};
+
+const templates={
+  formal:'Prezado(a) {{nome_convidado}},\n\nTemos o prazer de convidá-lo(a) para o {{nome_evento}}.\n\n📅 {{data_evento}} às {{horario}}\n📍 {{local}}\n\nSeu convite pessoal com QR Code está disponível em:\n{{link_convite}}\n\nAguardamos sua confirmação.\n\nAtenciosamente,\n{{nome_anfitriao}}',
+  simples:'Oi {{nome_convidado}}! 👋\n\nVocê está convidado(a) para o {{nome_evento}}!\n\n📅 {{data_evento}} · {{horario}}\n📍 {{local}}\n\nSeu convite: {{link_convite}}\n\nConfirma? 😊',
+  festivo:'🎉 {{nome_convidado}}, você foi convidado(a)! 🎉\n\n✨ {{nome_evento}} ✨\n\n📅 {{data_evento}}\n⏰ {{horario}}\n📍 {{local}}\n\n🎫 Seu convite & QR Code:\n{{link_convite}}\n\nNão falta, hein! 🥳\n— {{nome_anfitriao}}',
+};
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+function loadTemplate(t){
+  document.getElementById('msg-text').value=templates[t];
+  updatePreview();
+}
+
+function insertVar(v){
+  const ta=document.getElementById('msg-text');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.substring(0,s)+v+ta.value.substring(e);
+  ta.selectionStart=ta.selectionEnd=s+v.length;
+  ta.focus();
+  updatePreview();
+}
+
+function updatePreview(){
+  const msg=document.getElementById('msg-text').value
+    .replace(/{{nome_convidado}}/g,'<strong>João da Silva</strong>')
+    .replace(/{{nome_evento}}/g,'<strong>Aniversário da Ana Paula</strong>')
+    .replace(/{{data_evento}}/g,'14/06/2026')
+    .replace(/{{horario}}/g,'19h00')
+    .replace(/{{local}}/g,'Salão Principal, R. das Flores, 100')
+    .replace(/{{link_convite}}/g,'<span class="preview-link">buffetpro.app/convite/abc123</span>')
+    .replace(/{{nome_anfitriao}}/g,'Ana Paula Silva')
+    .replace(/\n/g,'<br>');
+  document.getElementById('preview-bubble').innerHTML=msg;
+}
+
+function selMethod(m){
+  curMethod=m;
+  document.getElementById('mc-web').className='method-card'+(m==='web'?' sel-wpp':'');
+  document.getElementById('mc-api').className='method-card'+(m==='api'?' sel-api':'');
+  document.getElementById('info-web').style.display=m==='web'?'block':'none';
+  document.getElementById('info-api').style.display=m==='api'?'block':'none';
+}
+
+function renderGuests(){
+  const el=document.getElementById('guest-list');
+  el.innerHTML='';
+  guests.forEach(function(g){
+    const hasPhone=!!g.phone;
+    const st=g.confirmed?'confirmed':g.status;
+    const div=document.createElement('div');
+    div.className='guest-row';
+    const initials=g.name.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();
+    div.innerHTML=
+      '<input type="checkbox" class="guest-check" id="gc-'+g.id+'" '+(hasPhone?'':'disabled')+' '+(hasPhone&&g.status==='pending'?'checked':'')+' onchange="updateSelCount()">' +
+      '<div class="gavatar">'+initials+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="gname">'+g.name+'</div>'+
+        '<div class="gphone">'+(hasPhone?'📱 ('+g.phone.substring(0,2)+') '+g.phone.substring(2,7)+'-'+g.phone.substring(7):'Sem telefone cadastrado')+'</div>'+
+      '</div>'+
+      '<span class="gbadge '+statusClass[st]+'">'+statusLabel[st]+'</span>';
+    el.appendChild(div);
+  });
+  updateSelCount();
+}
+
+function selAll(v){
+  document.querySelectorAll('.guest-check:not(:disabled)').forEach(function(c){c.checked=v;});
+  updateSelCount();
+}
+
+function selPending(){
+  guests.forEach(function(g){
+    const chk=document.getElementById('gc-'+g.id);
+    if(chk)chk.checked=g.status==='pending'&&!!g.phone;
+  });
+  updateSelCount();
+}
+
+function updateSelCount(){
+  const n=document.querySelectorAll('.guest-check:checked').length;
+  document.getElementById('sel-count').textContent=n+' convidado'+(n===1?'':'s')+' selecionado'+(n===1?'':'s');
+}
+
+function getSelGuests(){
+  return guests.filter(function(g){
+    const chk=document.getElementById('gc-'+g.id);
+    return chk&&chk.checked;
+  });
+}
+
+function startSend(){
+  const sel=getSelGuests();
+  if(!sel.length){alert('Selecione pelo menos um convidado para enviar.');return;}
+  if(curMethod==='web')sendWeb(sel);
+  else sendApi(sel);
+}
+
+function sendWeb(list){
+  const msg=document.getElementById('msg-text').value;
+  let i=0;
+  const progress=document.getElementById('send-progress');
+  progress.classList.add('show');
+  document.getElementById('prog-title').textContent='Abrindo WhatsApp Web...';
+  function next(){
+    if(i>=list.length){
+      document.getElementById('prog-title').textContent='✅ Todos os convites foram abertos no WhatsApp!';
+      document.getElementById('prog-sub').textContent='Verifique se enviou cada um no WhatsApp Web.';
+      return;
+    }
+    const g=list[i];
+    const pct=Math.round((i+1)/list.length*100);
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-sub').textContent='('+(i+1)+'/'+list.length+') Abrindo para: '+g.name;
+    const log=document.getElementById('prog-log');
+    log.innerHTML+='<div>📱 '+g.name+' → WhatsApp aberto</div>';
+    log.scrollTop=log.scrollHeight;
+    const personalMsg=msg
+      .replace(/{{nome_convidado}}/g,g.name)
+      .replace(/{{nome_evento}}/g,'Aniversário da Ana Paula')
+      .replace(/{{data_evento}}/g,'14/06/2026')
+      .replace(/{{horario}}/g,'19h00')
+      .replace(/{{local}}/g,'Salão Principal')
+      .replace(/{{link_convite}}/g,'https://buffetpro.app/convite/'+g.id)
+      .replace(/{{nome_anfitriao}}/g,'Ana Paula Silva');
+    window.open('https://wa.me/55'+g.phone+'?text='+encodeURIComponent(personalMsg),'_blank');
+    g.status='sent';
+    i++;
+    setTimeout(next,1500);
+  }
+  next();
+}
+
+function sendApi(list){
+  const progress=document.getElementById('send-progress');
+  progress.classList.add('show');
+  document.getElementById('prog-title').textContent='🚀 Enviando via API do WhatsApp...';
+  let i=0;
+  const interval=setInterval(function(){
+    if(i>=list.length){
+      clearInterval(interval);
+      document.getElementById('prog-fill').style.width='100%';
+      document.getElementById('prog-title').textContent='✅ '+list.length+' convites enviados com sucesso!';
+      document.getElementById('prog-sub').textContent='Custo total: R$ '+(list.length*0.10).toFixed(2)+' via WhatsApp Business API';
+      list.forEach(function(g){g.status='sent';});
+      renderGuests();
+      return;
+    }
+    const g=list[i];
+    const pct=Math.round((i+1)/list.length*100);
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-sub').textContent='Enviando '+(i+1)+' de '+list.length+'...';
+    const log=document.getElementById('prog-log');
+    log.innerHTML+='<div>✅ '+g.name+' · enviado</div>';
+    log.scrollTop=log.scrollHeight;
+    i++;
+  },400);
+}
+
+updatePreview();
+renderGuests();
+</script>
+</body>
+</html>

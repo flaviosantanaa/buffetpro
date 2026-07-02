@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:600;color:var(--text);line-height:1}
+.kpi-sub{font-size:11.5px;color:var(--text3);margin-top:4px}
+/* FILTROS */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.fchip{padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;font-family:var(--font);transition:all 0.15s}
+.fchip:hover{background:var(--surface2)}
+.fchip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 12px;flex:1;min-width:180px}
+.search input{border:none;background:transparent;color:var(--text);font-size:13.5px;outline:none;width:100%;font-family:var(--font)}
+.search input::placeholder{color:var(--text3)}
+/* BULK BAR */
+.bulk-bar{display:none;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;margin-bottom:12px;flex-wrap:wrap}
+.bulk-bar.show{display:flex}
+/* TABLE */
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;background:var(--surface2)}
+td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600}
+.b-adult{background:var(--blue-light);color:var(--blue)}
+.b-child{background:var(--amber-light);color:var(--amber)}
+.b-conf{background:var(--accent-light);color:var(--accent)}
+.b-pend{background:var(--surface2);color:var(--text3)}
+.b-recus{background:var(--red-light);color:var(--red)}
+.b-checkin{background:var(--accent-light);color:var(--accent)}
+.chk{width:18px;height:18px;border-radius:4px;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.15s;flex-shrink:0;background:var(--surface)}
+.chk.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.row-check{width:18px;height:18px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:var(--surface);transition:all 0.15s}
+tr.sel td{background:var(--accent-light)}
+tr.sel .row-check{background:var(--accent);border-color:var(--accent)}
+.act-btn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;transition:all 0.15s}
+.act-btn:hover{background:var(--surface2);color:var(--text)}
+/* GRUPO */
+.group-header{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text2)}
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:50;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.mbg.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;width:100%;max-width:460px;margin-top:20px}
+.modal.modal-qr{max-width:340px;text-align:center}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.mttl{font-size:15px;font-weight:600;color:var(--text)}
+.xbtn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px}
+.mfooter{display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+/* PROGRESS */
+.prog-wrap{margin-bottom:20px}
+.prog-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.prog-fill{height:100%;border-radius:4px;background:var(--accent);transition:width 0.4s}
+.prog-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--text3)}
+/* QR */
+#qr-box{display:flex;justify-content:center;margin:16px 0}
+.qr-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+.qr-info{font-size:13px;color:var(--text2);margin-bottom:16px}
+/* PRINT */
+@media print{.no-print{display:none!important}.tbl-wrap{border:none}th{background:none;border-bottom:2px solid #000}td{border-bottom:1px solid #ccc}}
+</style>
+</head>
+<body>
+
+<div class="topbar no-print">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Convidados</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px" id="event-info">Aniversário Ana Paula Silva · 14/06/2026</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn" onclick="window.print()"><i class="ti ti-printer" style="font-size:14px"></i>Imprimir lista</button>
+    <button class="btn" onclick="openBulkWpp()"><i class="ti ti-brand-whatsapp" style="font-size:14px"></i>Enviar convites</button>
+    <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus" style="font-size:14px"></i>Adicionar convidado</button>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-value" id="k-total">0</div><div class="kpi-sub">convidados</div></div>
+  <div class="kpi"><div class="kpi-label">Confirmados</div><div class="kpi-value" id="k-conf" style="color:var(--accent)">0</div><div class="kpi-sub">presença confirmada</div></div>
+  <div class="kpi"><div class="kpi-label">Pendentes</div><div class="kpi-value" id="k-pend" style="color:var(--amber)">0</div><div class="kpi-sub">aguardando resposta</div></div>
+  <div class="kpi"><div class="kpi-label">Check-in feito</div><div class="kpi-value" id="k-checkin" style="color:var(--blue)">0</div><div class="kpi-sub">já chegaram</div></div>
+  <div class="kpi"><div class="kpi-label">Adultos</div><div class="kpi-value" id="k-adult">0</div><div class="kpi-sub">pessoas</div></div>
+  <div class="kpi"><div class="kpi-label">Crianças</div><div class="kpi-value" id="k-child">0</div><div class="kpi-sub">pessoas</div></div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap no-print">
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="prog-labels"><span id="prog-label">0% confirmados</span><span id="prog-label2"></span></div>
+</div>
+
+<!-- FILTROS -->
+<div class="filter-bar no-print">
+  <div class="search"><i class="ti ti-search" style="color:var(--text3);font-size:15px"></i><input type="text" placeholder="Buscar convidado ou grupo..." oninput="applyFilter()"></div>
+  <div class="fchip sel" onclick="setFilter('todos',this)">Todos</div>
+  <div class="fchip" onclick="setFilter('confirmado',this)">✅ Confirmados</div>
+  <div class="fchip" onclick="setFilter('pendente',this)">⏳ Pendentes</div>
+  <div class="fchip" onclick="setFilter('checkin',this)">🏁 Check-in</div>
+  <div class="fchip" onclick="setFilter('adulto',this)">👤 Adultos</div>
+  <div class="fchip" onclick="setFilter('crianca',this)">👶 Crianças</div>
+</div>
+
+<!-- BULK BAR -->
+<div class="bulk-bar no-print" id="bulk-bar">
+  <span style="font-size:13.5px;font-weight:500;color:var(--text)" id="bulk-info">0 selecionados</span>
+  <div style="width:1px;height:20px;background:var(--border)"></div>
+  <button class="btn btn-sm" onclick="bulkConfirm()"><i class="ti ti-check" style="font-size:13px"></i>Confirmar presença</button>
+  <button class="btn btn-sm" onclick="bulkCheckin()"><i class="ti ti-login" style="font-size:13px"></i>Fazer check-in</button>
+  <button class="btn btn-sm" onclick="bulkWpp()"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>Enviar convite</button>
+  <button class="btn btn-sm btn-danger" onclick="bulkDelete()"><i class="ti ti-trash" style="font-size:13px"></i>Excluir</button>
+  <button class="btn btn-sm" onclick="deselectAll()"><i class="ti ti-x" style="font-size:13px"></i>Cancelar</button>
+</div>
+
+<!-- TABELA -->
+<div class="tbl-wrap">
+  <table id="guests-table">
+    <thead>
+      <tr>
+        <th class="no-print" style="width:30px"><div class="chk" id="sel-all" onclick="toggleAll()"><i class="ti ti-check" style="font-size:10px"></i></div></th>
+        <th>Nome</th>
+        <th>Grupo familiar</th>
+        <th>Tipo</th>
+        <th>Confirmação</th>
+        <th>Check-in</th>
+        <th class="no-print">Ações</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<!-- MODAL ADICIONAR -->
+<div class="mbg" id="mbg-add" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mttl">Adicionar convidado</div>
+      <button class="xbtn" onclick="document.getElementById('mbg-add').classList.remove('show')"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+    <div class="field"><label>Nome completo *</label><input type="text" id="g-name" placeholder="Ex: João da Silva"></div>
+    <div class="g2">
+      <div class="field"><label>Tipo</label>
+        <select id="g-type"><option value="adulto">Adulto</option><option value="crianca">Criança</option></select>
+      </div>
+      <div class="field"><label>Grupo familiar</label>
+        <input type="text" id="g-group" placeholder="Ex: Família Silva" list="groups-list">
+        <datalist id="groups-list"></datalist>
+      </div>
+    </div>
+    <div class="field"><label>Telefone / WhatsApp (opcional)</label><input type="text" id="g-phone" placeholder="(11) 99999-0000"></div>
+    <div class="mfooter">
+      <button class="btn" onclick="document.getElementById('mbg-add').classList.remove('show')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveGuest()"><i class="ti ti-user-plus" style="font-size:13px"></i>Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL QR CODE -->
+<div class="mbg" id="mbg-qr" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal modal-qr">
+    <div class="mhdr" style="justify-content:center;border:none;padding-bottom:4px">
+      <div class="mttl">QR Code de Check-in</div>
+      <button class="xbtn" style="position:absolute;right:20px" onclick="document.getElementById('mbg-qr').classList.remove('show')"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+    <div class="qr-name" id="qr-name"></div>
+    <div class="qr-info" id="qr-info"></div>
+    <div id="qr-box"></div>
+    <div style="font-size:11.5px;color:var(--text3);margin-bottom:16px">Apresente este QR Code na entrada do evento</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-sm" onclick="document.getElementById('mbg-qr').classList.remove('show')">Fechar</button>
+      <button class="btn btn-sm btn-primary" onclick="window.print()"><i class="ti ti-printer" style="font-size:13px"></i>Imprimir</button>
+      <button class="btn btn-sm" onclick="shareQrWpp()"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>Enviar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let guests=[
+  {id:1,name:'Marcos Pereira',type:'adulto',group:'Família Pereira',phone:'(11)99001-0001',status:'confirmado',checkin:true},
+  {id:2,name:'Camila Pereira',type:'adulto',group:'Família Pereira',phone:'(11)99001-0002',status:'confirmado',checkin:false},
+  {id:3,name:'Lucas Pereira (8 anos)',type:'crianca',group:'Família Pereira',phone:'',status:'confirmado',checkin:false},
+  {id:4,name:'Sandra Lima',type:'adulto',group:'Amigos da faculdade',phone:'(11)99002-0001',status:'confirmado',checkin:true},
+  {id:5,name:'Roberto Lima',type:'adulto',group:'Amigos da faculdade',phone:'(11)99002-0002',status:'pendente',checkin:false},
+  {id:6,name:'Fernanda Costa',type:'adulto',group:'Família Costa',phone:'(11)99003-0001',status:'pendente',checkin:false},
+  {id:7,name:'Paulo Costa',type:'adulto',group:'Família Costa',phone:'(11)99003-0002',status:'recusado',checkin:false},
+  {id:8,name:'Maria (6 anos)',type:'crianca',group:'Família Costa',phone:'',status:'pendente',checkin:false},
+  {id:9,name:'Juliana Souza',type:'adulto',group:'Colegas de trabalho',phone:'(11)99004-0001',status:'confirmado',checkin:false},
+  {id:10,name:'André Souza',type:'adulto',group:'Colegas de trabalho',phone:'(11)99004-0002',status:'pendente',checkin:false},
+];
+let nid=11,curFilter='todos',searchQ='',dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+function setFilter(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  render();
+}
+
+function applyFilter(){searchQ=document.querySelector('.search input').value.toLowerCase();render();}
+
+function getFiltered(){
+  return guests.filter(function(g){
+    const q=!searchQ||g.name.toLowerCase().includes(searchQ)||(g.group||'').toLowerCase().includes(searchQ);
+    const f=curFilter==='todos'||(curFilter==='confirmado'&&g.status==='confirmado')||(curFilter==='pendente'&&g.status==='pendente')||(curFilter==='checkin'&&g.checkin)||(curFilter==='adulto'&&g.type==='adulto')||(curFilter==='crianca'&&g.type==='crianca');
+    return q&&f;
+  });
+}
+
+function updateKPIs(){
+  document.getElementById('k-total').textContent=guests.length;
+  const conf=guests.filter(function(g){return g.status==='confirmado';}).length;
+  const pend=guests.filter(function(g){return g.status==='pendente';}).length;
+  const ci=guests.filter(function(g){return g.checkin;}).length;
+  const ad=guests.filter(function(g){return g.type==='adulto';}).length;
+  const ch=guests.filter(function(g){return g.type==='crianca';}).length;
+  document.getElementById('k-conf').textContent=conf;
+  document.getElementById('k-pend').textContent=pend;
+  document.getElementById('k-checkin').textContent=ci;
+  document.getElementById('k-adult').textContent=ad;
+  document.getElementById('k-child').textContent=ch;
+  const pct=guests.length?Math.round(conf/guests.length*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=pct+'% confirmados';
+  document.getElementById('prog-label2').textContent=conf+' de '+guests.length;
+}
+
+function render(){
+  const tb=document.getElementById('tbody');
+  tb.innerHTML='';
+  const filtered=getFiltered();
+  if(!filtered.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3)"><i class="ti ti-users-off" style="font-size:22px;display:block;margin-bottom:6px"></i>Nenhum convidado encontrado</td></tr>';updateKPIs();return;}
+  // agrupar por grupo
+  const groups={};
+  filtered.forEach(function(g){
+    const grp=g.group||'Sem grupo';
+    if(!groups[grp])groups[grp]=[];
+    groups[grp].push(g);
+  });
+  Object.keys(groups).forEach(function(grp){
+    const gl=groups[grp];
+    // header grupo
+    const htr=document.createElement('tr');
+    htr.innerHTML='<td colspan="7" class="no-print" style="padding:0"><div class="group-header"><i class="ti ti-users" style="font-size:13px"></i>'+grp+' <span style="font-size:11px;color:var(--text3);margin-left:4px">('+gl.length+' pessoas)</span></div></td>';
+    tb.appendChild(htr);
+    gl.forEach(function(g){
+      const tr=document.createElement('tr');
+      tr.id='tr-'+g.id;
+      tr.innerHTML=
+        '<td class="no-print"><input type="checkbox" class="row-check" onchange="toggleSel('+g.id+',this)" style="accent-color:var(--accent);width:16px;height:16px;cursor:pointer"></td>'+
+        '<td style="font-weight:500;color:var(--text)">'+g.name+'</td>'+
+        '<td style="font-size:12.5px">'+g.group+'</td>'+
+        '<td><span class="badge '+(g.type==='adulto'?'b-adult':'b-child')+'">'+(g.type==='adulto'?'👤 Adulto':'👶 Criança')+'</span></td>'+
+        '<td><span class="badge '+(g.status==='confirmado'?'b-conf':g.status==='recusado'?'b-recus':'b-pend')+'">'+(g.status==='confirmado'?'✅ Confirmado':g.status==='recusado'?'❌ Recusou':'⏳ Pendente')+'</span></td>'+
+        '<td><div class="chk '+(g.checkin?'on':'')+'" onclick="toggleCheckin('+g.id+')"><i class="ti ti-check" style="font-size:10px"></i></div></td>'+
+        '<td class="no-print"><div style="display:flex;gap:4px">'+
+          '<button class="act-btn" title="Confirmar presença" onclick="confirmGuest('+g.id+')"><i class="ti ti-check"></i></button>'+
+          '<button class="act-btn" title="QR Code" onclick="showQR('+g.id+')"><i class="ti ti-qrcode"></i></button>'+
+          '<button class="act-btn" title="WhatsApp" onclick="wppGuest('+g.id+')"><i class="ti ti-brand-whatsapp"></i></button>'+
+          '<button class="act-btn" title="Remover" onclick="removeGuest('+g.id+')" style="color:var(--red)"><i class="ti ti-trash"></i></button>'+
+        '</div></td>';
+      tb.appendChild(tr);
+    });
+  });
+  updateKPIs();
+}
+
+function toggleCheckin(id){
+  const g=guests.find(function(x){return x.id===id;});
+  if(!g)return;
+  g.checkin=!g.checkin;
+  if(g.checkin&&g.status==='pendente')g.status='confirmado';
+  render();
+}
+
+function confirmGuest(id){
+  const g=guests.find(function(x){return x.id===id;});
+  if(g){g.status='confirmado';render();}
+}
+
+function removeGuest(id){
+  guests=guests.filter(function(x){return x.id!==id;});
+  render();
+}
+
+function toggleSel(id,chk){
+  const tr=document.getElementById('tr-'+id);
+  if(chk.checked)tr.classList.add('sel');
+  else tr.classList.remove('sel');
+  updateBulk();
+}
+
+function toggleAll(){
+  const checks=document.querySelectorAll('.row-check');
+  const allChecked=[...checks].every(function(c){return c.checked;});
+  checks.forEach(function(c){
+    c.checked=!allChecked;
+    const id=parseInt(c.closest('tr').id.replace('tr-',''));
+    if(id){const tr=document.getElementById('tr-'+id);if(tr)tr.classList.toggle('sel',!allChecked);}
+  });
+  updateBulk();
+}
+
+function updateBulk(){
+  const sel=document.querySelectorAll('.row-check:checked').length;
+  document.getElementById('bulk-info').textContent=sel+' selecionado'+(sel===1?'':'s');
+  document.getElementById('bulk-bar').classList.toggle('show',sel>0);
+}
+
+function deselectAll(){
+  document.querySelectorAll('.row-check').forEach(function(c){c.checked=false;});
+  document.querySelectorAll('tr.sel').forEach(function(t){t.classList.remove('sel');});
+  document.getElementById('bulk-bar').classList.remove('show');
+}
+
+function getSelIds(){
+  return [...document.querySelectorAll('.row-check:checked')].map(function(c){return parseInt(c.closest('tr').id.replace('tr-',''));}).filter(Boolean);
+}
+
+function bulkConfirm(){
+  getSelIds().forEach(function(id){const g=guests.find(function(x){return x.id===id;});if(g)g.status='confirmado';});
+  deselectAll();render();
+}
+
+function bulkCheckin(){
+  getSelIds().forEach(function(id){const g=guests.find(function(x){return x.id===id;});if(g){g.checkin=true;g.status='confirmado';}});
+  deselectAll();render();
+}
+
+function bulkWpp(){
+  const ids=getSelIds();
+  alert('Enviando convite por WhatsApp para '+ids.length+' convidado(s)...\n\n(No app real, abrirá o WhatsApp com a mensagem personalizada para cada um)');
+  deselectAll();
+}
+
+function bulkDelete(){
+  const ids=getSelIds();
+  if(!confirm('Excluir '+ids.length+' convidado(s)?'))return;
+  guests=guests.filter(function(x){return!ids.includes(x.id);});
+  deselectAll();render();
+}
+
+function openBulkWpp(){
+  alert('Enviando convites por WhatsApp para todos os convidados com telefone cadastrado...\n\n(No app real, abrirá o WhatsApp com mensagem personalizada para cada um)');
+}
+
+function wppGuest(id){
+  const g=guests.find(function(x){return x.id===id;});
+  if(!g)return;
+  const msg=encodeURIComponent('Olá '+g.name+'! Você foi convidado(a) para o nosso evento. Confirme sua presença respondendo esta mensagem. 🎉');
+  const phone=(g.phone||'').replace(/\D/g,'');
+  if(phone)window.open('https://wa.me/55'+phone+'?text='+msg,'_blank');
+  else alert('Este convidado não tem telefone cadastrado.');
+}
+
+function showQR(id){
+  const g=guests.find(function(x){return x.id===id;});
+  if(!g)return;
+  document.getElementById('qr-name').textContent=g.name;
+  document.getElementById('qr-info').textContent=(g.type==='adulto'?'👤 Adulto':'👶 Criança')+' · '+g.group;
+  const box=document.getElementById('qr-box');
+  box.innerHTML='';
+  try{
+    new QRCode(box,{text:'CHECKIN:'+g.id+':'+g.name,width:200,height:200,colorDark:'#1a1916',colorLight:'#ffffff'});
+  }catch(e){
+    box.innerHTML='<div style="width:200px;height:200px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:13px;color:var(--text3)">QR Code gerado</div>';
+  }
+  document.getElementById('mbg-qr').classList.add('show');
+}
+
+function shareQrWpp(){
+  const g=guests.find(function(x){return x.id&&document.getElementById('qr-name').textContent===x.name;});
+  alert('No app real, o QR Code seria enviado por WhatsApp para o convidado.');
+}
+
+function openAddModal(){
+  // popular datalist com grupos existentes
+  const dl=document.getElementById('groups-list');
+  dl.innerHTML='';
+  const groups=[...new Set(guests.map(function(g){return g.group;}).filter(Boolean))];
+  groups.forEach(function(gr){const opt=document.createElement('option');opt.value=gr;dl.appendChild(opt);});
+  document.getElementById('mbg-add').classList.add('show');
+}
+
+function saveGuest(){
+  const name=document.getElementById('g-name').value.trim();
+  if(!name)return;
+  guests.push({id:nid++,name:name,type:document.getElementById('g-type').value,group:document.getElementById('g-group').value||'Sem grupo',phone:document.getElementById('g-phone').value,status:'pendente',checkin:false});
+  document.getElementById('mbg-add').classList.remove('show');
+  ['g-name','g-group','g-phone'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('g-type').value='adulto';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

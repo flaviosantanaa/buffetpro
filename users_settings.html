@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--blue:#1a5276;--blue-light:#e8f4fd;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+[data-theme=dark]{--bg:#0f0e0c;--surface:#1a1916;--surface2:#242220;--border:#2e2c28;--text:#f0ede8;--text2:#9e9b96;--text3:#6b6760;--accent:#40916c;--accent2:#52b788;--accent-light:#1b3a2d;--amber:#e07b30;--amber-light:#2a1f0e;--red:#e05252;--red-light:#2a1212;--blue:#3b82c4;--blue-light:#0e2035}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;padding:20px;max-width:900px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.btn-warn{background:var(--amber-light);color:var(--amber);border-color:var(--amber)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px}
+.tab{flex:1;padding:9px 10px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text2);background:transparent;border:none;font-family:var(--font);transition:all 0.15s;text-align:center}
+.tab.active{background:var(--accent);color:#fff}
+.page{display:none}.page.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-icon{width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.si-green{background:var(--accent-light);color:var(--accent)}
+.si-red{background:var(--red-light);color:var(--red)}
+.si-amber{background:var(--amber-light);color:var(--amber)}
+.si-blue{background:var(--blue-light);color:var(--blue)}
+.si-gray{background:var(--surface2);color:var(--text2)}
+.sec-title{font-size:14px;font-weight:600;color:var(--text)}
+.sec-sub{font-size:12px;color:var(--text2);margin-top:1px}
+/* USER CARDS */
+.user-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px}
+.ucard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color 0.15s}
+.ucard:hover{border-color:var(--text3)}
+.ucard.inactive{opacity:0.55}
+.ucard-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.uavatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0}
+.uname{font-size:14px;font-weight:600;color:var(--text)}
+.uemail{font-size:12px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.urole{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600;margin-bottom:10px}
+.role-admin{background:var(--red-light);color:var(--red)}
+.role-gerente{background:var(--amber-light);color:var(--amber)}
+.role-vendedor{background:var(--blue-light);color:var(--blue)}
+.role-operacional{background:var(--accent-light);color:var(--accent)}
+.role-financeiro{background:var(--surface2);color:var(--text2)}
+.umodules{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.umod{font-size:11px;padding:2px 7px;border-radius:20px;background:var(--surface2);color:var(--text2);font-weight:500}
+.ucard-footer{display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border)}
+.ustatus{font-size:11.5px;font-weight:600;margin-left:auto;display:flex;align-items:center;gap:4px}
+.ustatus-on{color:var(--accent)}
+.ustatus-off{color:var(--red)}
+.ulast{font-size:11px;color:var(--text3);margin-top:4px}
+/* PERMISSÕES */
+.perm-table{width:100%;border-collapse:collapse}
+.perm-table th{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;background:var(--surface2)}
+.perm-table th:not(:first-child){text-align:center}
+.perm-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)}
+.perm-table tr:last-child td{border-bottom:none}
+.perm-table td:not(:first-child){text-align:center}
+.perm-check{font-size:16px}
+/* HISTÓRICO */
+.hist-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.hist-row:last-child{border-bottom:none}
+.hist-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px}
+.hist-msg{font-size:13.5px;color:var(--text);flex:1}
+.hist-time{font-size:11.5px;color:var(--text3);flex-shrink:0}
+/* PLANO */
+.plan-card{border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:border-color 0.2s;cursor:pointer}
+.plan-card:hover{border-color:var(--accent)}
+.plan-card.active{border-color:var(--accent);background:var(--accent-light)}
+.plan-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+.plan-price{font-size:28px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.plan-price span{font-size:14px;font-weight:400;color:var(--text3)}
+.plan-features{text-align:left;margin-top:14px;font-size:13px;color:var(--text2)}
+.plan-feat{display:flex;align-items:center;gap:6px;padding:4px 0}
+/* FORM */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.module-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:8px}
+.mcheck{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.15s;user-select:none;font-size:13px;color:var(--text2)}
+.mcheck.sel{border-color:var(--accent);background:var(--accent-light);color:var(--accent);font-weight:500}
+.mcheck-box{width:18px;height:18px;border-radius:4px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all 0.15s}
+.mcheck.sel .mcheck-box{background:var(--accent);border-color:var(--accent);color:#fff}
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:50;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.mbg.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;width:100%;max-width:500px;margin-top:20px}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.mttl{font-size:15px;font-weight:600;color:var(--text)}
+.xbtn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px}
+.mfooter{display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px}
+.theme-toggle{cursor:pointer;width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:16px}
+.invite-sent{display:none;text-align:center;padding:14px;background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius-sm);margin-top:12px}
+.invite-sent.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Usuários & Configurações</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Gerencie acessos e plano da sua conta</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="theme-toggle" onclick="toggleTheme()" id="tbtn"><i class="ti ti-moon"></i></div>
+    <button class="btn btn-primary" onclick="document.getElementById('mbg-invite').classList.add('show')"><i class="ti ti-user-plus" style="font-size:14px"></i>Convidar usuário</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('usuarios',this)"><i class="ti ti-users" style="font-size:13px;margin-right:4px"></i>Usuários</button>
+  <button class="tab" onclick="switchTab('permissoes',this)"><i class="ti ti-shield" style="font-size:13px;margin-right:4px"></i>Permissões</button>
+  <button class="tab" onclick="switchTab('historico',this)"><i class="ti ti-history" style="font-size:13px;margin-right:4px"></i>Histórico</button>
+  <button class="tab" onclick="switchTab('plano',this)"><i class="ti ti-star" style="font-size:13px;margin-right:4px"></i>Plano</button>
+</div>
+
+<!-- USUÁRIOS -->
+<div class="page active" id="page-usuarios">
+  <div class="user-grid" id="user-grid"></div>
+</div>
+
+<!-- PERMISSÕES -->
+<div class="page" id="page-permissoes">
+  <div class="card">
+    <div class="sec-head">
+      <div class="sec-icon si-blue"><i class="ti ti-shield" aria-hidden="true"></i></div>
+      <div><div class="sec-title">Matriz de permissões por perfil</div><div class="sec-sub">O que cada perfil pode acessar e fazer</div></div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="perm-table">
+        <thead>
+          <tr>
+            <th>Módulo</th>
+            <th>Admin</th>
+            <th>Gerente</th>
+            <th>Vendedor</th>
+            <th>Operacional</th>
+            <th>Financeiro</th>
+          </tr>
+        </thead>
+        <tbody id="perm-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="page" id="page-historico">
+  <div class="card">
+    <div class="sec-head">
+      <div class="sec-icon si-gray"><i class="ti ti-history" aria-hidden="true"></i></div>
+      <div><div class="sec-title">Histórico de ações</div><div class="sec-sub">Registro de tudo que foi feito no app</div></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none" id="hist-filter" onchange="renderHist()">
+        <option value="todos">Todos os usuários</option>
+        <option value="Marcelo">Marcelo (admin)</option>
+        <option value="Roberto">Roberto (vendedor)</option>
+        <option value="Fernanda">Fernanda (operacional)</option>
+      </select>
+      <select style="padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none" id="hist-mod" onchange="renderHist()">
+        <option value="todos">Todos os módulos</option>
+        <option value="Clientes">Clientes</option>
+        <option value="Contratos">Contratos</option>
+        <option value="Financeiro">Financeiro</option>
+        <option value="Configurações">Configurações</option>
+      </select>
+    </div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+
+<!-- PLANO -->
+<div class="page" id="page-plano">
+  <div class="card">
+    <div class="sec-head">
+      <div class="sec-icon si-amber"><i class="ti ti-star" aria-hidden="true"></i></div>
+      <div><div class="sec-title">Seu plano atual</div><div class="sec-sub">Plano Pro · Renovação em 15/07/2026</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px">
+      <div class="plan-card active">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">R$ 89<span>/mês</span></div>
+        <div class="plan-features">
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>1 usuário (só admin)</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Todos os módulos</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Até 50 clientes</div>
+          <div class="plan-feat"><i class="ti ti-x" style="color:var(--text3);font-size:14px"></i>Usuários adicionais</div>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">R$ 149<span>/mês</span></div>
+        <div class="plan-features">
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>1 admin incluso</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Todos os módulos</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Clientes ilimitados</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>+ R$ 29/usuário extra</div>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Business</div>
+        <div class="plan-price">R$ 299<span>/mês</span></div>
+        <div class="plan-features">
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Até 5 usuários incluso</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Todos os módulos</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Clientes ilimitados</div>
+          <div class="plan-feat"><i class="ti ti-check" style="color:var(--accent);font-size:14px"></i>Suporte prioritário</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:13.5px;font-weight:500;color:var(--text)">Plano atual: Starter · 1 usuário</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">Para adicionar funcionários, faça upgrade para o plano Pro</div>
+      </div>
+      <button class="btn btn-primary"><i class="ti ti-arrow-up" style="font-size:14px"></i>Fazer upgrade</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONVIDAR -->
+<div class="mbg" id="mbg-invite" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mttl">Convidar usuário</div>
+      <button class="xbtn" onclick="document.getElementById('mbg-invite').classList.remove('show')"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+    <div class="field"><label>Nome completo *</label><input type="text" id="inv-name" placeholder="Nome do funcionário"></div>
+    <div class="field"><label>E-mail *</label><input type="email" id="inv-email" placeholder="email@exemplo.com"></div>
+    <div class="field">
+      <label>Perfil de acesso</label>
+      <select id="inv-role" onchange="setRoleModules(this.value)">
+        <option value="gerente">Gerente</option>
+        <option value="vendedor">Vendedor</option>
+        <option value="operacional">Operacional</option>
+        <option value="financeiro">Financeiro</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Módulos que pode acessar</label>
+      <div class="field-hint" style="font-size:11px;color:var(--text3);margin-bottom:6px">Pré-definidos pelo perfil — personalize se precisar</div>
+      <div class="module-checks" id="module-checks">
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Dashboard"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Dashboard</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="CRM"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>CRM / Leads</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Clientes"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Clientes</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Orçamentos"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Orçamentos</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Contratos"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Contratos</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Convidados"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Convidados</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Financeiro"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Financeiro</div>
+        <div class="mcheck sel" onclick="toggleMod(this)" data-m="Fechamento"><div class="mcheck-box"><i class="ti ti-check" style="font-size:10px"></i></div>Fechamento</div>
+        <div class="mcheck" onclick="toggleMod(this)" data-m="Configurações"><div class="mcheck-box"></div>Configurações</div>
+      </div>
+    </div>
+    <div class="invite-sent" id="invite-sent">
+      <i class="ti ti-mail" style="font-size:20px;color:var(--accent);display:block;margin-bottom:6px"></i>
+      <div style="font-size:14px;font-weight:600;color:var(--accent)">Convite enviado!</div>
+      <div style="font-size:12.5px;color:var(--text2);margin-top:4px">O usuário receberá um e-mail para criar a senha e acessar o app.</div>
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="document.getElementById('mbg-invite').classList.remove('show')">Cancelar</button>
+      <button class="btn btn-primary" onclick="sendInvite()"><i class="ti ti-send" style="font-size:13px"></i>Enviar convite</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR USUÁRIO -->
+<div class="mbg" id="mbg-edit" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mttl" id="edit-title">Editar usuário</div>
+      <button class="xbtn" onclick="document.getElementById('mbg-edit').classList.remove('show')"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+    <div style="font-size:13.5px;color:var(--text2);margin-bottom:14px" id="edit-info"></div>
+    <div class="field">
+      <label>Perfil de acesso</label>
+      <select id="edit-role">
+        <option value="admin">Administrador</option>
+        <option value="gerente">Gerente</option>
+        <option value="vendedor">Vendedor</option>
+        <option value="operacional">Operacional</option>
+        <option value="financeiro">Financeiro</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="edit-status">
+        <option value="ativo">✅ Ativo</option>
+        <option value="inativo">🚫 Bloqueado / Inativo</option>
+      </select>
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="document.getElementById('mbg-edit').classList.remove('show')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEdit()"><i class="ti ti-device-floppy" style="font-size:13px"></i>Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+let editingId=null;
+
+const users=[
+  {id:1,name:'Marcelo Pereira',email:'marcelo@buffet.com',role:'admin',modules:['Dashboard','CRM','Clientes','Orçamentos','Contratos','Convidados','Financeiro','Fechamento','Configurações'],active:true,last:'Hoje, 14:32',avatar:'MP',color:'#1a5276'},
+  {id:2,name:'Roberto Santos',email:'roberto@buffet.com',role:'vendedor',modules:['Dashboard','CRM','Clientes','Orçamentos'],active:true,last:'Hoje, 11:20',avatar:'RS',color:'#b5621a'},
+  {id:3,name:'Fernanda Lima',email:'fernanda@buffet.com',role:'operacional',modules:['Dashboard','Convidados','Fechamento'],active:true,last:'Ontem, 18:45',avatar:'FL',color:'#2d6a4f'},
+  {id:4,name:'Carlos Alberto',email:'carlos@buffet.com',role:'financeiro',modules:['Dashboard','Financeiro'],active:false,last:'05/06, 09:12',avatar:'CA',color:'#6b6760'},
+];
+
+const roleLabels={admin:'Administrador',gerente:'Gerente',vendedor:'Vendedor',operacional:'Operacional',financeiro:'Financeiro'};
+const roleClass={admin:'role-admin',gerente:'role-gerente',vendedor:'role-vendedor',operacional:'role-operacional',financeiro:'role-financeiro'};
+const roleColors={admin:'var(--red-light)',gerente:'var(--amber-light)',vendedor:'var(--blue-light)',operacional:'var(--accent-light)',financeiro:'var(--surface2)'};
+
+const roleModules={
+  admin:['Dashboard','CRM','Clientes','Orçamentos','Contratos','Convidados','Financeiro','Fechamento','Configurações'],
+  gerente:['Dashboard','CRM','Clientes','Orçamentos','Contratos','Convidados','Financeiro','Fechamento'],
+  vendedor:['Dashboard','CRM','Clientes','Orçamentos'],
+  operacional:['Dashboard','Convidados','Fechamento'],
+  financeiro:['Dashboard','Financeiro'],
+};
+
+const perms=[
+  {mod:'Dashboard',admin:true,gerente:true,vendedor:true,operacional:true,financeiro:true},
+  {mod:'CRM / Leads',admin:true,gerente:true,vendedor:true,operacional:false,financeiro:false},
+  {mod:'Clientes',admin:true,gerente:true,vendedor:true,operacional:false,financeiro:false},
+  {mod:'Orçamentos',admin:true,gerente:true,vendedor:true,operacional:false,financeiro:false},
+  {mod:'Contratos',admin:true,gerente:true,vendedor:false,operacional:false,financeiro:false},
+  {mod:'Convidados',admin:true,gerente:true,vendedor:false,operacional:true,financeiro:false},
+  {mod:'Check-in',admin:true,gerente:true,vendedor:false,operacional:true,financeiro:false},
+  {mod:'Financeiro',admin:true,gerente:true,vendedor:false,operacional:false,financeiro:true},
+  {mod:'Fechamento',admin:true,gerente:true,vendedor:false,operacional:true,financeiro:false},
+  {mod:'Configurações',admin:true,gerente:false,vendedor:false,operacional:false,financeiro:false},
+  {mod:'Usuários',admin:true,gerente:false,vendedor:false,operacional:false,financeiro:false},
+];
+
+const hist=[
+  {user:'Marcelo',mod:'Configurações',msg:'Alterou o nome da empresa para "Buffet Sabor & Arte"',time:'Hoje 14:30',icon:'⚙️',bg:'var(--surface2)'},
+  {user:'Roberto',mod:'CRM',msg:'Adicionou novo lead: Ana Beatriz · Casamento · R$ 42.000',time:'Hoje 11:18',icon:'👤',bg:'var(--blue-light)'},
+  {user:'Marcelo',mod:'Contratos',msg:'Converteu ORC-023 em contrato CTR-012 · Ana Paula Silva',time:'Hoje 10:05',icon:'📄',bg:'var(--accent-light)'},
+  {user:'Fernanda',mod:'Convidados',msg:'Fez check-in de 76 convidados no evento de Carlos Mendes',time:'Ontem 21:45',icon:'✅',bg:'var(--accent-light)'},
+  {user:'Marcelo',mod:'Financeiro',msg:'Registrou recebimento de R$ 3.300,00 · Família Costa',time:'Ontem 09:20',icon:'💰',bg:'var(--amber-light)'},
+  {user:'Roberto',mod:'Orçamentos',msg:'Enviou orçamento ORC-024 para Juliana Costa',time:'06/06 16:40',icon:'📤',bg:'var(--blue-light)'},
+  {user:'Carlos',mod:'Financeiro',msg:'Registrou despesa: Ingredientes do buffet · R$ 4.200,00',time:'02/06 08:55',icon:'💸',bg:'var(--red-light)'},
+];
+
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');document.getElementById('tbtn').innerHTML=dark?'<i class="ti ti-sun"></i>':'<i class="ti ti-moon"></i>';}
+function toggleTheme(){dark=!dark;applyTheme();}
+applyTheme();
+
+function switchTab(id,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function renderUsers(){
+  const grid=document.getElementById('user-grid');
+  grid.innerHTML='';
+  users.forEach(function(u){
+    const div=document.createElement('div');
+    div.className='ucard'+(u.active?'':' inactive');
+    div.innerHTML=
+      '<div class="ucard-top">'+
+        '<div class="uavatar" style="background:'+roleColors[u.role]+';color:'+u.color+'">'+u.avatar+'</div>'+
+        '<div style="min-width:0">'+
+          '<div class="uname">'+u.name+'</div>'+
+          '<div class="uemail">'+u.email+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<span class="urole '+roleClass[u.role]+'">'+roleLabels[u.role]+'</span>'+
+      '<div class="umodules">'+u.modules.map(function(m){return'<span class="umod">'+m+'</span>';}).join('')+'</div>'+
+      '<div class="ucard-footer">'+
+        (u.role!=='admin'?'<button class="btn btn-sm" onclick="openEdit('+u.id+')"><i class="ti ti-edit" style="font-size:12px"></i>Editar</button>':'<span style="font-size:12px;color:var(--text3);padding:4px 0">Conta principal</span>')+
+        '<div style="margin-left:auto;text-align:right">'+
+          '<div class="ustatus '+(u.active?'ustatus-on':'ustatus-off')+'">'+(u.active?'● Ativo':'● Inativo')+'</div>'+
+          '<div class="ulast">Último acesso: '+u.last+'</div>'+
+        '</div>'+
+      '</div>';
+    grid.appendChild(div);
+  });
+}
+
+function renderPerms(){
+  const tbody=document.getElementById('perm-body');
+  tbody.innerHTML='';
+  perms.forEach(function(p){
+    const tr=document.createElement('tr');
+    const check=function(v){return v?'<span class="perm-check">✅</span>':'<span class="perm-check" style="opacity:0.2">—</span>';};
+    tr.innerHTML='<td style="font-weight:500;color:var(--text)">'+p.mod+'</td><td>'+check(p.admin)+'</td><td>'+check(p.gerente)+'</td><td>'+check(p.vendedor)+'</td><td>'+check(p.operacional)+'</td><td>'+check(p.financeiro)+'</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function renderHist(){
+  const el=document.getElementById('hist-list');
+  const filterUser=document.getElementById('hist-filter').value;
+  const filterMod=document.getElementById('hist-mod').value;
+  el.innerHTML='';
+  const filtered=hist.filter(function(h){
+    return(filterUser==='todos'||h.user===filterUser)&&(filterMod==='todos'||h.mod===filterMod);
+  });
+  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Nenhum registro encontrado</div>';return;}
+  filtered.forEach(function(h){
+    const div=document.createElement('div');
+    div.className='hist-row';
+    div.innerHTML=
+      '<div class="hist-icon" style="background:'+h.bg+'">'+h.icon+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="hist-msg">'+h.msg+'</div>'+
+        '<div style="font-size:12px;color:var(--text3);margin-top:2px">'+h.user+' · '+h.mod+'</div>'+
+      '</div>'+
+      '<div class="hist-time">'+h.time+'</div>';
+    el.appendChild(div);
+  });
+}
+
+function openEdit(id){
+  const u=users.find(function(x){return x.id===id;});
+  if(!u)return;
+  editingId=id;
+  document.getElementById('edit-title').textContent='Editar: '+u.name;
+  document.getElementById('edit-info').textContent=u.email;
+  document.getElementById('edit-role').value=u.role;
+  document.getElementById('edit-status').value=u.active?'ativo':'inativo';
+  document.getElementById('mbg-edit').classList.add('show');
+}
+
+function saveEdit(){
+  const u=users.find(function(x){return x.id===editingId;});
+  if(!u)return;
+  u.role=document.getElementById('edit-role').value;
+  u.active=document.getElementById('edit-status').value==='ativo';
+  u.modules=roleModules[u.role]||[];
+  document.getElementById('mbg-edit').classList.remove('show');
+  renderUsers();
+}
+
+function toggleMod(el){
+  el.classList.toggle('sel');
+  const box=el.querySelector('.mcheck-box');
+  box.innerHTML=el.classList.contains('sel')?'<i class="ti ti-check" style="font-size:10px"></i>':'';
+}
+
+function setRoleModules(role){
+  const mods=roleModules[role]||[];
+  document.querySelectorAll('.mcheck').forEach(function(el){
+    const m=el.dataset.m;
+    const sel=mods.includes(m);
+    el.classList.toggle('sel',sel);
+    const box=el.querySelector('.mcheck-box');
+    box.innerHTML=sel?'<i class="ti ti-check" style="font-size:10px"></i>':'';
+  });
+}
+
+function sendInvite(){
+  const name=document.getElementById('inv-name').value.trim();
+  const email=document.getElementById('inv-email').value.trim();
+  if(!name||!email){alert('Preencha nome e e-mail para enviar o convite.');return;}
+  const mods=[...document.querySelectorAll('.mcheck.sel')].map(function(el){return el.dataset.m;});
+  const role=document.getElementById('inv-role').value;
+  users.push({id:users.length+1,name:name,email:email,role:role,modules:mods,active:false,last:'Nunca',avatar:name.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase(),color:'var(--text2)'});
+  document.getElementById('invite-sent').classList.add('show');
+  setTimeout(function(){
+    document.getElementById('invite-sent').classList.remove('show');
+    document.getElementById('mbg-invite').classList.remove('show');
+    document.getElementById('inv-name').value='';
+    document.getElementById('inv-email').value='';
+    renderUsers();
+  },2500);
+}
+
+renderUsers();
+renderPerms();
+renderHist();
+</script>
+</body>
+</html>
