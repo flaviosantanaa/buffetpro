@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/buffetpro_app.html" }
+  ]
+}
