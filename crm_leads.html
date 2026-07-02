@@ -119,7 +119,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15
     <div><div class="dname" id="d-name"></div><div class="dsub" id="d-sub"></div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary btn-sm"><i class="ti ti-file-plus" style="font-size:13px"></i>Criar orçamento</button>
-      <button class="btn btn-sm" onclick="closeDetail()"><i class="ti ti-x" style="font-size:13px"></i>Fechar</button>
+      <button class="btn btn-sm" onclick="editLead()"><i class="ti ti-edit" style="font-size:13px"></i>Editar</button><button class="btn btn-sm" onclick="closeDetail()"><i class="ti ti-x" style="font-size:13px"></i>Fechar</button>
     </div>
   </div>
   <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px">Etapa do pipeline</div>
@@ -141,8 +141,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15
     <div class="ilist" id="ilist"></div>
   </div>
   <div class="dfooter">
-    <button class="btn btn-sm"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>WhatsApp</button>
-    <button class="btn btn-sm"><i class="ti ti-mail" style="font-size:13px"></i>E-mail</button>
+    <button class="btn btn-sm" onclick="wppLead()"><i class="ti ti-brand-whatsapp" style="font-size:13px"></i>WhatsApp</button>
+    <button class="btn btn-sm" onclick="emailLead()"><i class="ti ti-mail" style="font-size:13px"></i>E-mail</button>
   </div>
 </div>
 
@@ -348,6 +348,79 @@ function saveLead(){
 function fmtD(d){if(!d)return'';var p=d.split('-');return p[2]+'/'+p[1];}
 
 renderP();
+
+function wppLead(){
+  var l=leads.find(function(x){return x.id===curId;});
+  if(!l||!l.phone){alert('Este lead não tem telefone cadastrado.');return;}
+  var phone=l.phone.replace(/\D/g,'');
+  var msg=encodeURIComponent('Olá '+l.name+'! Tudo bem? Entrando em contato sobre o seu evento. 😊');
+  window.open('https://wa.me/55'+phone+'?text='+msg,'_blank');
+}
+
+function emailLead(){
+  var l=leads.find(function(x){return x.id===curId;});
+  if(!l||!l.email){alert('Este lead não tem e-mail cadastrado.');return;}
+  window.location.href='mailto:'+l.email+'?subject=Seu evento conosco';
+}
+
+function editLead(){
+  var l=leads.find(function(x){return x.id===curId;});
+  if(!l)return;
+  // Popula o modal de edição
+  document.getElementById('el-name').value=l.name||'';
+  document.getElementById('el-phone').value=l.phone||'';
+  document.getElementById('el-email').value=l.email||'';
+  document.getElementById('el-event').value=l.event||'';
+  document.getElementById('el-date').value=l.date||'';
+  document.getElementById('el-guests').value=l.guests||'';
+  document.getElementById('el-value').value=l.value?l.value.replace('R$ ',''):'';
+  document.getElementById('mbg-edit').classList.add('show');
+}
+
+function saveEdit(){
+  var l=leads.find(function(x){return x.id===curId;});
+  if(!l)return;
+  l.name=document.getElementById('el-name').value.trim()||l.name;
+  l.phone=document.getElementById('el-phone').value;
+  l.email=document.getElementById('el-email').value;
+  l.event=document.getElementById('el-event').value;
+  l.date=document.getElementById('el-date').value;
+  l.guests=parseInt(document.getElementById('el-guests').value)||0;
+  var val=document.getElementById('el-value').value;
+  l.value=val?'R$ '+val:'';
+  document.getElementById('mbg-edit').classList.remove('show');
+  openD(curId);
+  renderP();renderL();
+}
 </script>
+
+<!-- MODAL EDITAR LEAD -->
+<div class="mbg" id="mbg-edit" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mttl">Editar lead</div>
+      <button class="xbtn" onclick="document.getElementById('mbg-edit').classList.remove('show')"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+    <div class="field"><label>Nome *</label><input type="text" id="el-name" placeholder="Nome do lead"></div>
+    <div class="g2">
+      <div class="field"><label>Telefone</label><input type="text" id="el-phone" placeholder="(11) 99999-0000"></div>
+      <div class="field"><label>E-mail</label><input type="email" id="el-email" placeholder="email@exemplo.com"></div>
+    </div>
+    <div class="g2">
+      <div class="field"><label>Tipo de evento</label>
+        <select id="el-event"><option value="">Selecione</option><option>Aniversário</option><option>Casamento</option><option>Formatura</option><option>Corporativo</option><option>Churrasco</option><option>Outro</option></select>
+      </div>
+      <div class="field"><label>Data prevista</label><input type="date" id="el-date"></div>
+    </div>
+    <div class="g2">
+      <div class="field"><label>Nº de convidados</label><input type="number" id="el-guests" placeholder="Ex: 100"></div>
+      <div class="field"><label>Valor estimado (R$)</label><input type="text" id="el-value" placeholder="0,00"></div>
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="document.getElementById('mbg-edit').classList.remove('show')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEdit()"><i class="ti ti-device-floppy" style="font-size:13px"></i>Salvar alterações</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
