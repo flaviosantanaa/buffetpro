@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--border:#e2ddd6;--text:#1a1916;--text2:#6b6760;--text3:#9e9b96;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--amber:#b5621a;--amber-light:#fef3e2;--red:#c0392b;--red-light:#fde8e8;--radius:12px;--radius-sm:8px;--font:'DM Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;padding:20px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font);transition:all 0.15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+/* FILTROS */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.fchip{padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;font-family:var(--font);transition:all 0.15s}
+.fchip:hover{background:var(--surface2)}
+.fchip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 12px;flex:1;min-width:180px}
+.search input{border:none;background:transparent;color:var(--text);font-size:13.5px;outline:none;width:100%;font-family:var(--font)}
+/* GRID DE CARDS */
+.ing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ing-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;position:relative;transition:border-color 0.15s}
+.ing-card:hover{border-color:var(--text3)}
+.ing-card-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ing-card-unit{font-size:12.5px;color:var(--text3);margin-bottom:6px}
+.ing-card-price{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px}
+.ing-card-qty{font-size:12px;color:var(--text2);margin-bottom:8px;background:var(--surface2);padding:5px 8px;border-radius:var(--radius-sm)}
+.ing-card-events{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.ev-tag{font-size:10.5px;padding:2px 7px;border-radius:20px;background:var(--accent-light);color:var(--accent);font-weight:500}
+.ing-card-footer{display:flex;gap:6px;padding-top:10px;border-top:1px solid var(--border)}
+.ing-rm{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:12px;opacity:0;transition:all 0.15s}
+.ing-card:hover .ing-rm{opacity:1}
+.ing-rm:hover{background:var(--red-light);color:var(--red);border-color:var(--red)}
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:50;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.mbg.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;width:100%;max-width:480px;margin-top:20px}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.mttl{font-size:15px;font-weight:600;color:var(--text)}
+.xbtn{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px}
+.mfooter{display:flex;justify-content:flex-end;gap:8px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:500;color:var(--text2)}
+.field input,.field select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13.5px;background:var(--surface);color:var(--text);font-family:var(--font);outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field-hint{font-size:11px;color:var(--text3);margin-top:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.prefix{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:border-color 0.15s}
+.prefix:focus-within{border-color:var(--accent)}
+.prefix span{padding:8px 10px;font-size:13px;color:var(--text3);background:var(--surface2);border-right:1px solid var(--border);white-space:nowrap}
+.prefix input{border:none;outline:none;padding:8px 10px;font-size:13.5px;background:transparent;color:var(--text);font-family:var(--font);width:100%}
+.ev-checks{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ev-check{padding:5px 10px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;font-family:var(--font);transition:all 0.15s;user-select:none}
+.ev-check.sel{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty i{font-size:36px;display:block;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div style="font-size:20px;font-weight:600;color:var(--text)">Ingredientes</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:2px">Cadastre os insumos do seu buffet</div>
+  </div>
+  <button class="btn btn-primary" onclick="openModal()"><i class="ti ti-plus" style="font-size:14px"></i>Novo ingrediente</button>
+</div>
+
+<div class="filter-bar">
+  <div class="search"><i class="ti ti-search" style="color:var(--text3);font-size:15px"></i><input type="text" placeholder="Buscar ingrediente..." oninput="render()"></div>
+  <div class="fchip sel" onclick="setFilter('todos',this)">Todos</div>
+  <div class="fchip" onclick="setFilter('churrasco',this)">🔥 Churrasco</div>
+  <div class="fchip" onclick="setFilter('aniversario',this)">🎂 Aniversário</div>
+  <div class="fchip" onclick="setFilter('casamento',this)">💒 Casamento</div>
+  <div class="fchip" onclick="setFilter('formatura',this)">🎓 Formatura</div>
+  <div class="fchip" onclick="setFilter('corporativo',this)">🏢 Corporativo</div>
+  <div class="fchip" onclick="setFilter('cafe',this)">☕ Café</div>
+</div>
+
+<div class="ing-grid" id="ing-grid"></div>
+
+<!-- MODAL -->
+<div class="mbg" id="mbg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mttl" id="modal-title">Novo ingrediente</div>
+      <button class="xbtn" onclick="closeModal()"><i class="ti ti-x" style="font-size:13px"></i></button>
+    </div>
+
+    <div class="field"><label>Nome do ingrediente *</label><input type="text" id="m-nome" placeholder="Ex: Picanha, Arroz branco, Refrigerante..."></div>
+
+    <div class="g2">
+      <div class="field">
+        <label>Unidade de medida</label>
+        <select id="m-unit">
+          <option value="kg">kg (quilograma)</option>
+          <option value="g">g (grama)</option>
+          <option value="l">l (litro)</option>
+          <option value="ml">ml (mililitro)</option>
+          <option value="un">un (unidade)</option>
+          <option value="pct">pct (pacote)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Preço por unidade</label>
+        <div class="prefix"><span>R$</span><input type="text" id="m-preco" placeholder="0,00" oninput="maskMoney(this)"></div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px">Quantidade por pessoa</div>
+    <div class="g2" style="margin-bottom:4px">
+      <div class="field" style="margin-bottom:0">
+        <label>Mínimo (consumo econômico)</label>
+        <div class="prefix"><input type="number" id="m-min" placeholder="Ex: 0.10" step="0.01" min="0"><span id="unit-label-min">kg</span></div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Máximo (consumo farto)</label>
+        <div class="prefix"><input type="number" id="m-max" placeholder="Ex: 0.15" step="0.01" min="0"><span id="unit-label-max">kg</span></div>
+      </div>
+    </div>
+    <div class="field-hint" style="margin-bottom:12px">Crianças consomem 50% da quantidade de adultos automaticamente</div>
+
+    <div class="field">
+      <label>Aparece em quais eventos?</label>
+      <div class="field-hint" style="margin-bottom:6px">Selecione todos que se aplicam</div>
+      <div class="ev-checks">
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="churrasco">🔥 Churrasco</div>
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="aniversario">🎂 Aniversário</div>
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="casamento">💒 Casamento</div>
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="formatura">🎓 Formatura</div>
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="corporativo">🏢 Corporativo</div>
+        <div class="ev-check" onclick="toggleEv(this)" data-ev="cafe">☕ Café da manhã</div>
+      </div>
+    </div>
+
+    <div class="mfooter">
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvar()"><i class="ti ti-device-floppy" style="font-size:13px"></i>Salvar ingrediente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const evLabels={churrasco:'🔥 Churrasco',aniversario:'🎂 Aniversário',casamento:'💒 Casamento',formatura:'🎓 Formatura',corporativo:'🏢 Corporativo',cafe:'☕ Café'};
+
+// Ingredientes padrão — usados como exemplo até o usuário cadastrar os próprios
+const DEFAULTS=[
+  {id:'d1',nome:'Picanha',unit:'kg',preco:89.90,min:0.35,max:0.45,eventos:['churrasco','casamento']},
+  {id:'d2',nome:'Frango grelhado',unit:'kg',preco:22.00,min:0.20,max:0.30,eventos:['churrasco','formatura','corporativo']},
+  {id:'d3',nome:'Arroz branco',unit:'kg',preco:8.49,min:0.10,max:0.15,eventos:['churrasco','aniversario','casamento','formatura']},
+  {id:'d4',nome:'Salgados fritos',unit:'un',preco:2.50,min:4,max:6,eventos:['aniversario','formatura','corporativo']},
+  {id:'d5',nome:'Strogonoff de frango',unit:'kg',preco:28.00,min:0.15,max:0.20,eventos:['aniversario']},
+  {id:'d6',nome:'Bolo',unit:'kg',preco:35.00,min:0.08,max:0.12,eventos:['aniversario','casamento','formatura']},
+  {id:'d7',nome:'Filé mignon',unit:'kg',preco:95.00,min:0.25,max:0.35,eventos:['casamento']},
+  {id:'d8',nome:'Refrigerante lata',unit:'un',preco:4.50,min:1,max:2,eventos:['churrasco','aniversario','formatura','corporativo']},
+  {id:'d9',nome:'Farofa',unit:'kg',preco:12.00,min:0.08,max:0.12,eventos:['churrasco']},
+  {id:'d10',nome:'Pão de queijo',unit:'un',preco:1.50,min:2,max:3,eventos:['cafe']},
+  {id:'d11',nome:'Café com leite',unit:'l',preco:3.00,min:0.20,max:0.30,eventos:['cafe','corporativo']},
+];
+
+// Carrega do localStorage ou usa os padrão
+function loadIngs(){
+  const saved=localStorage.getItem('buffetpro_ingredientes');
+  if(saved){
+    const parsed=JSON.parse(saved);
+    return parsed.length?parsed:DEFAULTS;
+  }
+  return DEFAULTS;
+}
+
+function saveIngs(ings){
+  localStorage.setItem('buffetpro_ingredientes',JSON.stringify(ings));
+}
+
+let ings=loadIngs();
+let curFilter='todos';
+let editId=null;
+
+document.getElementById('m-unit').onchange=function(){
+  const u=this.value;
+  document.getElementById('unit-label-min').textContent=u;
+  document.getElementById('unit-label-max').textContent=u;
+};
+
+function setFilter(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.fchip').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  render();
+}
+
+function render(){
+  const q=(document.querySelector('.search input').value||'').toLowerCase();
+  const grid=document.getElementById('ing-grid');
+  const filtered=ings.filter(function(i){
+    const matchQ=!q||i.nome.toLowerCase().includes(q);
+    const matchF=curFilter==='todos'||i.eventos.includes(curFilter);
+    return matchQ&&matchF;
+  });
+  if(!filtered.length){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1"><i class="ti ti-salad"></i><p>Nenhum ingrediente encontrado</p><button class="btn btn-primary" style="margin-top:12px" onclick="openModal()"><i class="ti ti-plus"></i>Cadastrar ingrediente</button></div>';
+    return;
+  }
+  grid.innerHTML='';
+  filtered.forEach(function(ing){
+    const div=document.createElement('div');
+    div.className='ing-card';
+    div.innerHTML=
+      '<button class="ing-rm" onclick="excluir(\''+ing.id+'\')" aria-label="Excluir"><i class="ti ti-trash" style="font-size:11px"></i></button>'+
+      '<div class="ing-card-name">'+ing.nome+'</div>'+
+      '<div class="ing-card-unit">Medido em <strong>'+ing.unit+'</strong></div>'+
+      '<div class="ing-card-price">R$ '+fmt(ing.preco)+'/'+ing.unit+'</div>'+
+      '<div class="ing-card-qty">👤 '+ing.min+' a '+ing.max+' '+ing.unit+' por pessoa</div>'+
+      '<div class="ing-card-events">'+ing.eventos.map(function(e){return'<span class="ev-tag">'+(evLabels[e]||e)+'</span>';}).join('')+'</div>'+
+      '<div class="ing-card-footer">'+
+        '<button class="btn btn-sm" onclick="editar(\''+ing.id+'\')"><i class="ti ti-edit" style="font-size:12px"></i>Editar</button>'+
+      '</div>';
+    grid.appendChild(div);
+  });
+}
+
+function openModal(id){
+  editId=id||null;
+  document.getElementById('modal-title').textContent=id?'Editar ingrediente':'Novo ingrediente';
+  document.querySelectorAll('.ev-check').forEach(function(e){e.classList.remove('sel');});
+  if(id){
+    const ing=ings.find(function(x){return x.id===id;});
+    if(!ing)return;
+    document.getElementById('m-nome').value=ing.nome;
+    document.getElementById('m-unit').value=ing.unit;
+    document.getElementById('m-preco').value=fmt(ing.preco);
+    document.getElementById('m-min').value=ing.min;
+    document.getElementById('m-max').value=ing.max;
+    document.getElementById('unit-label-min').textContent=ing.unit;
+    document.getElementById('unit-label-max').textContent=ing.unit;
+    ing.eventos.forEach(function(ev){
+      const el=document.querySelector('.ev-check[data-ev="'+ev+'"]');
+      if(el)el.classList.add('sel');
+    });
+  } else {
+    document.getElementById('m-nome').value='';
+    document.getElementById('m-preco').value='';
+    document.getElementById('m-min').value='';
+    document.getElementById('m-max').value='';
+    document.getElementById('m-unit').value='kg';
+    document.getElementById('unit-label-min').textContent='kg';
+    document.getElementById('unit-label-max').textContent='kg';
+  }
+  document.getElementById('mbg').classList.add('show');
+}
+
+function closeModal(){document.getElementById('mbg').classList.remove('show');}
+
+function editar(id){openModal(id);}
+
+function excluir(id){
+  if(!confirm('Excluir este ingrediente?'))return;
+  ings=ings.filter(function(x){return x.id!==id;});
+  saveIngs(ings);
+  render();
+}
+
+function toggleEv(el){el.classList.toggle('sel');}
+
+function salvar(){
+  const nome=document.getElementById('m-nome').value.trim();
+  if(!nome){alert('Informe o nome do ingrediente.');return;}
+  const eventos=[...document.querySelectorAll('.ev-check.sel')].map(function(e){return e.dataset.ev;});
+  if(!eventos.length){alert('Selecione pelo menos um tipo de evento.');return;}
+  const ing={
+    id:editId||('i'+Date.now()),
+    nome:nome,
+    unit:document.getElementById('m-unit').value,
+    preco:parseMoney(document.getElementById('m-preco').value),
+    min:parseFloat(document.getElementById('m-min').value)||0,
+    max:parseFloat(document.getElementById('m-max').value)||0,
+    eventos:eventos,
+  };
+  if(editId){
+    const idx=ings.findIndex(function(x){return x.id===editId;});
+    if(idx>=0)ings[idx]=ing;
+  } else {
+    ings.push(ing);
+  }
+  saveIngs(ings);
+  closeModal();
+  render();
+}
+
+function fmt(v){return Number(v).toFixed(2).replace('.',',');}
+function maskMoney(el){let v=el.value.replace(/\D/g,'');v=(parseInt(v||0)/100).toFixed(2);el.value=v.replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');}
+function parseMoney(s){return parseFloat((s||'0').replace(/\./g,'').replace(',','.'))||0;}
+
+render();
+</script>
+</body>
+</html>

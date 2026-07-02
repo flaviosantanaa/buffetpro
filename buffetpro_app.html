@@ -280,6 +280,8 @@ tr:hover td{background:var(--surface2)}
     <li><div class="nav-section">Gestão</div></li>
     <li><a onclick="goTo('financeiro')" id="nav-financeiro"><i class="ti ti-coin"></i>Financeiro<span class="nav-badge" id="badge-financeiro">2</span></a></li>
     <li><a onclick="goTo('calculadora')" id="nav-calculadora"><i class="ti ti-calculator"></i>Calculadora</a></li>
+    <li><a onclick="goTo('ingredientes')" id="nav-ingredientes"><i class="ti ti-salad"></i>Ingredientes</a></li>
+    <li><a onclick="goTo('ingredientes')" id="nav-ingredientes"><i class="ti ti-salad"></i>Ingredientes</a></li>
 
     <!-- CONFIGURAÇÕES -->
     <li><div class="nav-section">Sistema</div></li>
@@ -428,7 +430,19 @@ tr:hover td{background:var(--surface2)}
     <!-- CALCULADORA -->
     <div class="page" id="page-calculadora">
       <div class="breadcrumb"><i class="ti ti-calculator" style="font-size:13px"></i><span class="breadcrumb-cur">Calculadora de buffet</span></div>
-      <iframe src="buffet_calculator_v2.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:var(--radius)" title="Calculadora" id="iframe-calculadora"></iframe>
+      <iframe src="calculadora.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:var(--radius)" title="Calculadora" id="iframe-calculadora"></iframe>
+    </div>
+
+    <!-- INGREDIENTES -->
+    <div class="page" id="page-ingredientes">
+      <div class="breadcrumb"><i class="ti ti-salad" style="font-size:13px"></i><span class="breadcrumb-cur">Ingredientes</span></div>
+      <iframe src="ingredientes.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:var(--radius)" title="Ingredientes" id="iframe-ingredientes"></iframe>
+    </div>
+
+    <!-- INGREDIENTES -->
+    <div class="page" id="page-ingredientes">
+      <div class="breadcrumb"><i class="ti ti-salad" style="font-size:13px"></i><span class="breadcrumb-cur">Ingredientes</span></div>
+      <iframe src="ingredientes.html" style="width:100%;height:calc(100vh - 120px);border:none;border-radius:var(--radius)" title="Ingredientes" id="iframe-ingredientes"></iframe>
     </div>
 
     <!-- USUÁRIOS -->
@@ -585,7 +599,10 @@ function renderCal(){
     const isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
     el.style.cssText='aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:6px;cursor:'+(ev?'pointer':'default')+';background:'+bg+';color:'+color+';font-weight:'+(isToday?'700':fw)+';'+(isToday&&!ev?'border:2px solid var(--border);':'');
     el.textContent=d;
-    if(ev)el.title=ev.label;
+    if(ev){
+      el.title=ev.label;
+      el.onclick=function(){showEventDetail(ev.label,key);};
+    }
     grid.appendChild(el);
   }
 }
@@ -616,10 +633,64 @@ function renderUpcoming(){
   }).join('')+'<div style="padding:10px 0;text-align:center"><a style="font-size:12.5px;color:var(--accent);cursor:pointer;font-weight:500" onclick="goTo(\'dashboard\')">Ver todos os eventos →</a></div>';
 }
 
+// MENSAGENS DOS IFRAMES (calculadora → ingredientes etc)
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='navigate'){goTo(e.data.page);}
+});
+
 // INIT
 goTo('inicio');
 renderCal();
 renderUpcoming();
+
+// MODAL DE DETALHE DO EVENTO
+function showEventDetail(label, dateKey){
+  // Busca o evento pelo label ou pela data
+  const ev=Object.values(calEvents).find(function(e){return e.label===label;})||{label:label,type:'confirmed'};
+  const parts=(ev.label||label).split(' · ');
+  const nome=parts[0]||'Evento';
+  const tipo=parts[1]||'';
+
+  // Monta o modal
+  let modal=document.getElementById('event-detail-modal');
+  if(!modal){
+    modal=document.createElement('div');
+    modal.id='event-detail-modal';
+    modal.style.cssText='display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;align-items:center;justify-content:center;padding:20px';
+    modal.onclick=function(e){if(e.target===modal)closeEventDetail();};
+    document.body.appendChild(modal);
+  }
+  const typeColor=ev.type==='confirmed'?'var(--accent)':ev.type==='reserved'?'var(--amber)':'var(--blue)';
+  const typeBg=ev.type==='confirmed'?'var(--accent-light)':ev.type==='reserved'?'var(--amber-light)':'var(--blue-light)';
+  const typeLabel=ev.type==='confirmed'?'✅ Confirmado':ev.type==='reserved'?'🟡 Pré-reservado':'🔵 Proposta';
+  const dateLabel=dateKey?dateKey.split('-').reverse().join('/'):'';
+
+  modal.innerHTML=
+    '<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:100%;max-width:420px">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">'+
+        '<div style="font-size:16px;font-weight:600;color:var(--text)">Detalhes do evento</div>'+
+        '<button onclick="closeEventDetail()" style="width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px"><i class="ti ti-x"></i></button>'+
+      '</div>'+
+      '<div style="display:flex;flex-direction:column;gap:12px">'+
+        '<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px">'+
+          '<div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px">'+nome+'</div>'+
+          '<div style="font-size:13px;color:var(--text2)">'+tipo+'</div>'+
+        '</div>'+
+        (dateLabel?'<div style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text2)"><i class="ti ti-calendar" style="color:var(--text3);font-size:16px"></i>'+dateLabel+'</div>':'')+
+        '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:'+typeBg+';color:'+typeColor+'">'+typeLabel+'</span></div>'+
+      '</div>'+
+      '<div style="display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">'+
+        '<button onclick="closeEventDetail();goTo('convidados')" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font)"><i class="ti ti-users" style="font-size:14px"></i>Convidados</button>'+
+        '<button onclick="closeEventDetail();goTo('contratos')" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:#fff;font-family:var(--font)"><i class="ti ti-file-check" style="font-size:14px"></i>Ver contrato</button>'+
+      '</div>'+
+    '</div>';
+  modal.style.display='flex';
+}
+
+function closeEventDetail(){
+  const modal=document.getElementById('event-detail-modal');
+  if(modal)modal.style.display='none';
+}
 </script>
 </body>
 </html>
